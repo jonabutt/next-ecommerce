@@ -1,3 +1,4 @@
+import { Container } from "@mui/material"
 import NavBar from "./NavBar"
 
 interface Props {
@@ -7,8 +8,10 @@ interface Props {
 const Layout: React.FC<Props> = ({children}) => {
   return (
     <>
-        <NavBar />
+      <NavBar />
+      <Container maxWidth="lg">
         {children}
+      </Container>
     </>
   )
 }
