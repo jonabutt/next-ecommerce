@@ -3,7 +3,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import AddIcon from '@mui/icons-material/Add';
 import Link from 'next/link';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 interface UserData {
@@ -44,6 +44,23 @@ const Register: NextPage = () => {
         event.preventDefault();
     };
 
+    const handleSubmit = async (event: (FormEvent<HTMLFormElement>)) => {
+        event.preventDefault();
+
+        const res = await fetch(`/api/auth/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': ''
+            },
+            body: JSON.stringify(userData)
+        })
+    
+        const data = await res.json();
+        console.log(data);
+        console.log(data);
+    }
+
     return (
         <>
         <Head>
@@ -65,7 +82,7 @@ const Register: NextPage = () => {
                 </Typography>
 
                   
-                <form>
+                <form onSubmit={handleSubmit}>
                     <FormControl  sx={{ m: 1 }} fullWidth variant="outlined" required>
                         <InputLabel htmlFor="userdata-name">Name</InputLabel>
                         <OutlinedInput 
