@@ -19,6 +19,7 @@ export default async function handler (
     switch(req.method){
         case "POST":
             await register(req,res)
+            break;
     }
 }
 
@@ -44,7 +45,11 @@ const register = async (
         });
         console.log(newUser);
         res.json({success:true,msg:"Register Success!"});
-    }catch(err){
-        return res.status(500).json({success:false,msg: err.message});
+    }catch(err: unknown){
+        if (typeof err === "string") {
+            return res.status(500).json({success:false,msg: err});
+        } else if (err instanceof Error) {
+            return res.status(500).json({success:false,msg: (err as Error).message});
+        }
     }
 }
