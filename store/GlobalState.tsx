@@ -6,7 +6,6 @@ interface Props {
 }
 
 const initialState = { 
-    notify: '',
     auth: ''
 }
 

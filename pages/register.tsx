@@ -1,10 +1,13 @@
-import { Avatar, Button, Link as MUILink, Grid, Paper, TextField, Typography, FormControl, InputLabel, Input, InputAdornment, IconButton, OutlinedInput } from '@mui/material'
+import { Avatar, Button, Link as MUILink, Grid, Paper, Typography, FormControl, InputLabel, Input, InputAdornment, IconButton, OutlinedInput } from '@mui/material'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import AddIcon from '@mui/icons-material/Add';
-import Link from 'next/link';
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add'
+import Link from 'next/link'
+import { ChangeEvent, FormEvent, useState, useContext } from 'react'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { validateRegister } from '../utils/validateForms'
+import {DataContext} from '../store/GlobalState'
+import toast from 'react-hot-toast'
 
 interface UserData {
     name: string;
@@ -18,10 +21,10 @@ interface UserData {
 const Register: NextPage = () => {
     const initialState : UserData = { name: '', email: '',showPassword:false, password: '', confirmPassword: '',showConfirmPassword:false};
     const [userData, setUserData] = useState<UserData>(initialState);
-    var {name,email,password,confirmPassword,showPassword,showConfirmPassword} = userData;
+    const {name,email,password,confirmPassword,showPassword,showConfirmPassword} = userData;
     const paperStyle = { padding:20, display: "flex", flexDirection:"column", alignItems: "center"};
     const avatarStyle = { backgroundColor : "#1bbd7e"};
-
+    const { state , dispatch } = useContext(DataContext);
     const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
         setUserData({...userData,[e.currentTarget.name]:e.currentTarget.value})
     }
@@ -47,18 +50,12 @@ const Register: NextPage = () => {
     const handleSubmit = async (event: (FormEvent<HTMLFormElement>)) => {
         event.preventDefault();
 
-        const res = await fetch(`/api/auth/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': ''
-            },
-            body: JSON.stringify(userData)
-        })
-    
-        const data = await res.json();
-        console.log(data);
-        console.log(data);
+        const errMsg = validateRegister(name,email,password,confirmPassword);
+     
+        if(errMsg){
+            return toast.error(errMsg);
+        }
+        toast.success("Success, created account.");
     }
 
     return (
