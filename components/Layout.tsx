@@ -2,7 +2,7 @@ import { Container } from "@mui/material"
 import NavBar from "./NavBar"
 
 interface Props {
-    children: JSX.Element
+    children: React.ReactNode
 };
 
 const Layout: React.FC<Props> = ({children}) => {
