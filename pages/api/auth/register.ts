@@ -31,6 +31,11 @@ const register = async (
         // validate register data
         const errMsg = validateRegister(name,email,password,confirmPassword);
         if(errMsg) return res.status(400).json({success:false,msg: errMsg});
+
+        const user = await prisma.user.findFirst({where: {
+            email: email
+          }});
+        if(user) return res.status(400).json({success:false,msg: "Email already taken!"});
         
         // hash the password using bcrypt
         const passwordHash = await bcrypt.hash(password,11);
@@ -43,7 +48,6 @@ const register = async (
                 password: passwordHash
             }
         });
-        console.log(newUser);
         res.json({success:true,msg:"Register Success!"});
     }catch(err: unknown){
         if (typeof err === "string") {

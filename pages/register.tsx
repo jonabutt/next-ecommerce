@@ -8,6 +8,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { validateRegister } from '../utils/validateForms'
 import {DataContext} from '../store/GlobalState'
 import toast from 'react-hot-toast'
+import {postData} from '../utils/fetchAPI'
 
 interface UserData {
     name: string;
@@ -51,11 +52,23 @@ const Register: NextPage = () => {
         event.preventDefault();
 
         const errMsg = validateRegister(name,email,password,confirmPassword);
-     
+        
         if(errMsg){
             return toast.error(errMsg);
         }
-        toast.success("Success, created account.");
+        // call the api to register the user
+        const res = await postData(
+            "auth/register",
+            userData,
+            ''
+        )
+        // if the api return success true show success message
+        if(res.success === true){
+            toast.success(res.msg);
+        }
+        else {
+            toast.error(res.msg);
+        }
     }
 
     return (
