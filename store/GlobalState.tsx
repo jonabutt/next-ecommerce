@@ -6,6 +6,7 @@ interface Props {
 }
 
 const initialState = { 
+    isLoading: false,
     auth: ''
 }
 

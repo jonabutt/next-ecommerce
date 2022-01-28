@@ -9,6 +9,7 @@ import { validateRegister } from '../utils/validateForms'
 import {DataContext} from '../store/GlobalState'
 import toast from 'react-hot-toast'
 import {postData} from '../utils/fetchAPI'
+import ActionKind from '../store/Actions'
 
 interface UserData {
     name: string;
@@ -50,10 +51,12 @@ const Register: NextPage = () => {
 
     const handleSubmit = async (event: (FormEvent<HTMLFormElement>)) => {
         event.preventDefault();
-
+        dispatch({ type: ActionKind.SET_LOADING, payload: true })
+    
         const errMsg = validateRegister(name,email,password,confirmPassword);
         
         if(errMsg){
+            dispatch({ type: ActionKind.SET_LOADING, payload: false })
             return toast.error(errMsg);
         }
         // call the api to register the user
@@ -69,6 +72,8 @@ const Register: NextPage = () => {
         else {
             toast.error(res.msg);
         }
+        dispatch({ type: ActionKind.SET_LOADING, payload: false })
+
     }
 
     return (

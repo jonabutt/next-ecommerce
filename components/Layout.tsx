@@ -1,14 +1,17 @@
+import React, { ReactNode } from 'react'
 import { Container } from "@mui/material"
 import NavBar from "./NavBar"
 import {Toaster} from 'react-hot-toast'
+import Loading from './Loading';
 
-interface Props {
-    children: React.ReactNode
+type Props = {
+    children?: ReactNode
 };
 
-const Layout: React.FC<Props> = ({children}) => {
+const Layout = ({children}: Props) => {
   return (
     <>
+      <Loading />
       <NavBar />
       <Toaster/>
       <Container maxWidth="lg">
