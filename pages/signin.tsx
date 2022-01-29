@@ -1,9 +1,13 @@
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useState , useContext} from 'react'
 import { LockOutlined, Visibility, VisibilityOff } from '@mui/icons-material'
 import { Avatar, Button, FormControl, Grid, IconButton, InputAdornment, InputLabel, Link as MUILink, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
+import {DataContext} from '../store/GlobalState'
+import toast from 'react-hot-toast'
+import {postData} from '../utils/fetchAPI'
+import ActionKind from '../store/Actions'
 
 interface LoginData {
   username: string;
@@ -15,6 +19,7 @@ const Signin: NextPage = () => {
   const initialState : LoginData = { username: '', password: ''};
   const [loginData, setLoginData] = useState<LoginData>(initialState);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const { state , dispatch } = useContext(DataContext);
 
   const {username,password} = loginData;
 
@@ -32,20 +37,22 @@ const Signin: NextPage = () => {
 
   const handleSubmit = async (event: (FormEvent<HTMLFormElement>)) => {
     event.preventDefault();
-    console.log(loginData);
-    console.log(loginData);
-    // const res = await fetch(`/api/auth/register`, {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         'Authorization': ''
-    //     },
-    //     body: JSON.stringify(userData)
-    // })
+    dispatch({ type: ActionKind.SET_LOADING, payload: true })
+    const res = await postData(
+      "auth/signin",
+      loginData,
+      ''
+    )
+    // if the api return success true show success message
+    if(res.success === true){
+      toast.success(res.msg);
+    }
+    else {
+      toast.error(res.msg);
+    }
 
-    // const data = await res.json();
-    // console.log(data);
-    // console.log(data);
+    dispatch({ type: ActionKind.SET_LOADING, payload: false })
+
   }
   return (
     <>

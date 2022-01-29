@@ -36,7 +36,8 @@ const register = async (
             email: email
           }});
         if(user) return res.status(400).json({success:false,msg: "Email already taken!"});
-        
+        console.log(password);
+        console.log("register");
         // hash the password using bcrypt
         const passwordHash = await bcrypt.hash(password,11);
         // creating a new user in the database
