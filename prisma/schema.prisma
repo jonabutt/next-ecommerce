@@ -18,6 +18,7 @@ model User {
   dateCreated DateTime @default(now())
   Role        Role     @relation(fields: [roleId], references: [id])
   roleId      String
+  isRoot      Boolean
 }
 
 model Role {
