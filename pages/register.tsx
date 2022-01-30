@@ -1,15 +1,16 @@
-import { Avatar, Button, Link as MUILink, Grid, Paper, Typography, FormControl, InputLabel, Input, InputAdornment, IconButton, OutlinedInput } from '@mui/material'
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import AddIcon from '@mui/icons-material/Add'
-import Link from 'next/link'
-import { ChangeEvent, FormEvent, useState, useContext } from 'react'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
-import { validateRegister } from '../utils/validateForms'
-import {DataContext} from '../store/GlobalState'
-import toast from 'react-hot-toast'
-import {postData} from '../utils/fetchAPI'
-import ActionKind from '../store/Actions'
+import { Avatar, Button, Link as MUILink, Grid, Paper, Typography, FormControl, InputLabel, Input, InputAdornment, IconButton, OutlinedInput } from '@mui/material';
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import AddIcon from '@mui/icons-material/Add';
+import Link from 'next/link';
+import { ChangeEvent, FormEvent, useState, useContext , useEffect} from 'react';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { validateRegister } from '../utils/validateForms';
+import {DataContext} from '../store/GlobalState';
+import toast from 'react-hot-toast';
+import {postData} from '../utils/fetchAPI';
+import ActionKind from '../store/Actions';
+import { useRouter } from 'next/router';
 
 interface UserData {
     name: string;
@@ -30,7 +31,16 @@ const Register: NextPage = () => {
     const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
         setUserData({...userData,[e.currentTarget.name]:e.currentTarget.value})
     }
+    
+    const { auth } = state;
 
+    const router = useRouter();
+
+    useEffect(()=>{
+        if(auth!==null){
+          router.push('/');
+        }
+      },[auth]);
     const handleClickShowPassword = () => {
         setUserData({
           ...userData,
