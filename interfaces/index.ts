@@ -11,3 +11,8 @@ export type PayloadAuth = {
     token: string
     user: User
 }
+
+// the jwt data
+export type JwtPayload = {
+    id: string
+}

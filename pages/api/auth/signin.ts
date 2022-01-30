@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import bcrypt from 'bcrypt';
 import {PrismaClient} from '@prisma/client';
-import {createAccessToken,createRefreshToken,Payload} from '../../../utils/generateToken';
-import {User} from '../../../interfaces';
+import {createAccessToken,createRefreshToken} from '../../../utils/generateToken';
+import {JwtPayload, User} from '../../../interfaces';
 
 const prisma = new PrismaClient();
 
@@ -45,8 +45,8 @@ const login = async (
             return res.status(403).json({success:false,msg:"Email or password are incorrect!"});
         }
 
-        const accessToken = createAccessToken({id:user.id});
-        const refreshToken = createRefreshToken({id:user.id});
+        const accessToken = createAccessToken({id:user.id} as JwtPayload);
+        const refreshToken = createRefreshToken({id:user.id} as JwtPayload);
 
         const returnUser:User = {
             name: user.name,

@@ -3,7 +3,7 @@ import ActionKind ,{Action} from './Actions'
 
 export type ContextProps = {
     isLoading: boolean,
-    auth: PayloadAuth
+    auth: PayloadAuth | null
 }
 
 const reducers = (state:ContextProps,action:Action):ContextProps=>{
