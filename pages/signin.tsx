@@ -8,6 +8,8 @@ import {DataContext} from '../store/GlobalState'
 import toast from 'react-hot-toast'
 import {postData} from '../utils/fetchAPI'
 import ActionKind from '../store/Actions'
+import Cookie from 'js-cookie'
+import { PayloadAuth } from '../interfaces'
 
 interface LoginData {
   username: string;
@@ -45,7 +47,21 @@ const Signin: NextPage = () => {
     )
     // if the api return success true show success message
     if(res.success === true){
+      Cookie.set('refreshToken',res.refreshToken,{
+        path: 'api/auth/accessToken',
+        expires: 7
+      });
+      localStorage.setItem('firstLogin', 'true');
+      // show toast success
       toast.success(res.msg);
+      // save the jwt token in global state
+      const authPayload: PayloadAuth = {
+          token: res.accessToken,
+          user: res.user
+      };
+      dispatch({ type: ActionKind.AUTH, 
+          payload: authPayload
+      });
     }
     else {
       toast.error(res.msg);

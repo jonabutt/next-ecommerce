@@ -1,3 +1,5 @@
+import { PayloadAuth } from "../interfaces";
+
 enum ActionKind {
     SET_LOADING = 'SET_LOADING',
     AUTH= 'AUTH'
@@ -5,7 +7,7 @@ enum ActionKind {
 
 export type Action = {
     type: ActionKind,
-    payload: string
+    payload: PayloadAuth
 }
 |
 {
