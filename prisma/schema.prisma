@@ -26,3 +26,24 @@ model Role {
   name  String
   users User[]
 }
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  price       Decimal
+  description String
+  content     String
+  checked     Boolean  @default(false)
+  stockAmount Int      @default(0)
+  soldCount   Int      @default(0)
+  images      String[]
+  dateCreated DateTime @default(now())
+  Category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  String
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String
+  products Product[]
+}
