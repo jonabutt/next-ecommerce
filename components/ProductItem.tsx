@@ -1,10 +1,11 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from '@mui/material'
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from '@mui/material'
 import { Product } from '@prisma/client'
 import React from 'react'
 
-const ProductItem = ({name,description}:Product) => {
+const ProductItem = ({name,description,price,stockAmount}:Product) => {
+    const stockText = stockAmount===0?"Out of Stock!":`In Stock: ${stockAmount}`;
     return (
-        <Grid item md={2}>
+        <Grid item md={2.5}>
             <Card>
                 <CardMedia
                     component="img"
@@ -16,18 +17,27 @@ const ProductItem = ({name,description}:Product) => {
                     <Typography gutterBottom variant="h6" component="div">
                         {name}
                     </Typography>
+                    <Box sx={{ display: 'flex',flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <Typography component="div" color="primary" variant="body2" >
+                            &euro;{Number(price).toFixed(2)}
+                        </Typography>
+                        <Typography component="div" color="primary" variant="body2" >
+                            {stockText}
+                        </Typography>
+                    </Box>
+                   
                     <Typography noWrap variant="body2" color="text.secondary">
                         {description}
                     </Typography>
                 </CardContent>
-                <CardActions>
-                    <Button size="small">
-                        <Typography variant="body2">
+                <CardActions sx={{justifyContent: 'space-between' }}>
+                    <Button variant="contained" size="small" >
+                        <Typography style={{fontSize:'12px'}}>
                             Add to cart
                         </Typography>
                     </Button>
-                    <Button size="small">
-                        <Typography variant="body2">
+                    <Button variant="outlined" size="small" >
+                        <Typography style={{fontSize:'12px'}} >
                             Learn More
                         </Typography>
                     </Button>
