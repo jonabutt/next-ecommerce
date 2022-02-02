@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from '@mui/material'
 import { Product } from '@prisma/client'
 
-const ProductItem = ({id,name,description,price,stockAmount}:Product) => {
+const ProductItem = ({id,name,description,price,stockAmount,images}:Product) => {
     const stockText = stockAmount===0?"Out of Stock!":`In Stock: ${stockAmount}`;
     return (
         <Grid item md={2.5}>
@@ -11,7 +11,7 @@ const ProductItem = ({id,name,description,price,stockAmount}:Product) => {
                 <CardMedia
                     component="img"
                     height="120"
-                    image="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
+                    image={images[0]}
                     alt="burger"
                 />
                 <CardContent>
