@@ -1,8 +1,9 @@
+import React from 'react'
+import Link from 'next/link'
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from '@mui/material'
 import { Product } from '@prisma/client'
-import React from 'react'
 
-const ProductItem = ({name,description,price,stockAmount}:Product) => {
+const ProductItem = ({id,name,description,price,stockAmount}:Product) => {
     const stockText = stockAmount===0?"Out of Stock!":`In Stock: ${stockAmount}`;
     return (
         <Grid item md={2.5}>
@@ -33,14 +34,19 @@ const ProductItem = ({name,description,price,stockAmount}:Product) => {
                 <CardActions sx={{justifyContent: 'space-between' }}>
                     <Button variant="contained" size="small" >
                         <Typography style={{fontSize:'12px'}}>
+                            
                             Add to cart
                         </Typography>
                     </Button>
-                    <Button variant="outlined" size="small" >
+                    <Link href={`product/${id}`} passHref>
+                        <Button variant="outlined" size="small" component="a">
                         <Typography style={{fontSize:'12px'}} >
+                          
                             Learn More
                         </Typography>
-                    </Button>
+                        </Button>
+                    </Link>
+                    
                 </CardActions>
             </Card>
         </Grid>
