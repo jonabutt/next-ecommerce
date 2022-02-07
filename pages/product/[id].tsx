@@ -4,7 +4,7 @@ import type { NextPage } from 'next';
 import { getData } from '../../utils/fetchAPI';
 import { Product } from '@prisma/client';
 import { Box } from '@mui/system';
-import { Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import ImageItem from '../../components/ImageItem';
 
 type PageProps = {
@@ -13,6 +13,8 @@ type PageProps = {
 
 const ProductDetails: NextPage<PageProps> = ({product}) => {
     const [mainImage,setMainImage] = useState(product.images[0]);
+    const stockText = product.stockAmount===0?"Out of Stock!":`In Stock: ${product.stockAmount}`;
+
     return <>
         <Head>
             Product Details
@@ -48,12 +50,32 @@ const ProductDetails: NextPage<PageProps> = ({product}) => {
                 <Typography variant="h3" component="h3">
                     {product.name}
                 </Typography>
-                <Typography paragraph={true} variant="body1">
+                <Typography color="primary" variant="h5" component="div">
+                    &euro;{Number(product.price).toFixed(2)}
+                </Typography>
+                <Grid container >
+                    <Grid item xs={6}>
+                        <Typography color="primary">
+                            {stockText}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={6}  display="flex" justifyContent="flex-end">
+                        <Typography component="span" color="primary">
+                            Sold: {product.soldCount}
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Typography paragraph={true} variant="body2">
                     {product.description}
                 </Typography>
                 <Typography paragraph={true} variant="body2">
                     {product.content}
                 </Typography>
+                <Button variant="contained" size="medium" >
+                    <Typography style={{fontSize:'12px'}}>
+                        Buy
+                    </Typography>
+                </Button>
             </Grid>
         </Grid>
     </>
