@@ -1,7 +1,8 @@
 import { createContext , useEffect, useReducer } from 'react';
 import { getData } from '../utils/fetchAPI';
-import ActionKind from './Actions';
-import reducers,{ContextProps} from './Reducers'
+import {ActionKind} from './Actions';
+import reducers,{ContextProps} from './Reducers';
+import { CartItem } from '../interfaces';
 
 interface Props {
     children: React.ReactNode
@@ -9,7 +10,8 @@ interface Props {
 
 const initialState = { 
     isLoading: false,
-    auth: null
+    auth: null,
+    cart: [] as CartItem[] 
 }
 
 const DataContext  = createContext<{

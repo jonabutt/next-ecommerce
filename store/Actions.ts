@@ -1,8 +1,9 @@
-import { PayloadAuth } from "../interfaces";
+import { PayloadAuth,CartItem } from "../interfaces";
 
-enum ActionKind {
+export enum ActionKind {
     SET_LOADING = 'SET_LOADING',
-    AUTH= 'AUTH'
+    AUTH = 'AUTH',
+    ADD_CART = 'ADD_CART'
 }
 
 export type Action = {
@@ -14,6 +15,8 @@ export type Action = {
     type: ActionKind,
     payload: boolean
 }
-
-  
-export default ActionKind;
+|
+{
+    type: ActionKind,
+    payload: CartItem[]
+}

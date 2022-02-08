@@ -16,3 +16,12 @@ export type PayloadAuth = {
 export type JwtPayload = {
     id: string
 }
+
+// used for user data in the client side
+export type CartItem = {
+    productId: string,
+    name: string,
+    price: number,
+    images: string[],
+    quantity: number
+}

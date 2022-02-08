@@ -1,14 +1,12 @@
 import React,{useContext} from 'react'
-import { AppBar, Avatar, Box, Divider, IconButton,Link as MUILink,  ListItemIcon,  Menu,  MenuItem,  Toolbar, Tooltip, Typography } from "@mui/material"
+import { AppBar, Avatar, Badge, Box, Divider, IconButton,Link as MUILink,  ListItemIcon,  Menu,  MenuItem,  Toolbar, Tooltip, Typography } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PersonIcon from '@mui/icons-material/Person';
 import Link from "next/link";
 import { useRouter } from 'next/router';
 import { DataContext } from '../store/GlobalState';
-import { Logout } from '@mui/icons-material';
+import { Logout , ShoppingCart, Person } from '@mui/icons-material';
 import toast from 'react-hot-toast';
-import ActionKind from '../store/Actions';
+import { ActionKind } from '../store/Actions';
 import Cookie from 'js-cookie';
 
 const NavBar = () => {
@@ -20,7 +18,7 @@ const NavBar = () => {
 
     const router = useRouter();
     const {state,dispatch} = useContext(DataContext);
-    const {auth} = state;
+    const {auth,cart} = state;
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -178,7 +176,9 @@ const NavBar = () => {
                        <Link href="/cart" passHref>
                             <MUILink color="inherit" underline="none">
                                 <MenuItem justify-self="flex-end" onClick={handleCloseNavMenu}>
-                                    <ShoppingCartIcon/>
+                                    <Badge badgeContent={cart.length} color="error">
+                                        <ShoppingCart/>
+                                    </Badge>
                                     <Typography textAlign="center">Cart</Typography>
                                 </MenuItem>
                             </MUILink>
@@ -186,7 +186,7 @@ const NavBar = () => {
                         <Link href="/signin" passHref>
                             <MUILink color="inherit" underline="none">
                                 <MenuItem selected={true} justify-self="flex-end" onClick={handleCloseNavMenu}>
-                                    <PersonIcon/>
+                                    <Person/>
                                     <Typography textAlign="center">Sign in</Typography>
                                 </MenuItem>
                             </MUILink>
@@ -207,8 +207,10 @@ const NavBar = () => {
                             <MenuItem sx={{ "&&.Mui-selected": {
                                     backgroundColor: "#001F5E"
                                 }}} selected={isActive("/cart")} justify-self="flex-end" onClick={handleCloseNavMenu}>
-                                <ShoppingCartIcon/>
-                                <Typography textAlign="center">Car11t</Typography>
+                                <Badge badgeContent={cart.length} color="error">
+                                    <ShoppingCart/>
+                                </Badge>
+                                <Typography textAlign="center">Cart</Typography>
                             </MenuItem>
                         </MUILink>
                     </Link>
@@ -220,7 +222,7 @@ const NavBar = () => {
                                 <MenuItem sx={{ "&&.Mui-selected": {
                                         backgroundColor: "#001F5E"
                                     }}} selected={isActive("/signin")} justify-self="flex-end" onClick={handleCloseNavMenu}>
-                                    <PersonIcon/>
+                                    <Person/>
                                     <Typography textAlign="center">Sign in</Typography>
                                 </MenuItem>
                             </MUILink>
