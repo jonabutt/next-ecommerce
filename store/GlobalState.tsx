@@ -26,8 +26,8 @@ const DataContext  = createContext<{
 
 const DataProvider:React.FC<Props> = ({children}) => {
     // passing the reducers and initial state
-    const [state, dispatch] = useReducer(reducers,initialState)
-
+    const [state, dispatch] = useReducer(reducers,initialState);
+    const { cart } = state;
     useEffect(() => {
         const firstLogin = localStorage.getItem("firstLogin");
         if(firstLogin==="true"){
@@ -45,7 +45,21 @@ const DataProvider:React.FC<Props> = ({children}) => {
             })
         }
         
-    },[])
+    },[]);
+
+    useEffect(() => {
+        var localStorageCart = localStorage.getItem('__jbecommerce__cart');
+        if(localStorageCart !== null){
+            const __jbecommerce__cart = JSON.parse(localStorageCart as string) as CartItem[];
+            dispatch({type: ActionKind.ADD_CART,payload:__jbecommerce__cart});
+        }
+    },[]);
+
+    // on change cart set local storage
+    useEffect(() => {
+        localStorage.setItem('__jbecommerce__cart', JSON.stringify(cart));
+    },[cart]);
+
 
     return <DataContext.Provider value={{state, dispatch}}>
         {children}
