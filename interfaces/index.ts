@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client"
+
 // used for user data in the client side
 export type User = {
     name: string
@@ -21,7 +23,7 @@ export type JwtPayload = {
 export type CartItem = {
     productId: string,
     name: string,
-    price: number,
+    price: Prisma.Decimal,
     images: string[],
     quantity: number
 }
