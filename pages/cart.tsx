@@ -1,8 +1,35 @@
+import { useContext } from 'react'
 import type { NextPage } from 'next'
+import Head from 'next/head'
+import { DataContext } from '../store/GlobalState'
+import Image from 'next/image'
+import { Box } from '@mui/material'
 
 const Cart: NextPage = () => {
+  const { state, dispatch } = useContext(DataContext);
+  const { cart } = state;
+  if(cart.length === 0){
+    return  <Box sx={{display: 'flex',flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+        <Head>
+          Cart
+        </Head>
+        <h2>No Items in Cart</h2>
+        <Image src={"/empty-cart.png"} 
+          alt="empty cart"
+          layout="intrinsic"
+          width={500}
+          height={394}/>
+      </Box>
+  }
   return (
-    <div>Cart</div>
+    <>
+      <Head>
+        Cart
+      </Head>
+      <h2>Cart</h2>
+      {
+      }
+    </>
   )
 }
 
