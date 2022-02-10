@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Head from 'next/head';
 import type { NextPage } from 'next';
 import { getData } from '../../utils/fetchAPI';
@@ -6,6 +6,8 @@ import { Product } from '@prisma/client';
 import { Box } from '@mui/system';
 import { Button, Grid, Typography } from '@mui/material';
 import ImageItem from '../../components/ImageItem';
+import { DataContext } from '../../store/GlobalState';
+import { addToCart } from '../../store/Actions';
 
 type PageProps = {
     product : Product
@@ -14,7 +16,8 @@ type PageProps = {
 const ProductDetails: NextPage<PageProps> = ({product}) => {
     const [mainImage,setMainImage] = useState(product.images[0]);
     const stockText = product.stockAmount===0?"Out of Stock!":`In Stock: ${product.stockAmount}`;
-
+    const { state, dispatch } = useContext(DataContext);
+    const { cart } = state;
     return <>
         <Head>
             Product Details
@@ -71,7 +74,7 @@ const ProductDetails: NextPage<PageProps> = ({product}) => {
                 <Typography paragraph={true} variant="body2">
                     {product.content}
                 </Typography>
-                <Button variant="contained" size="medium" >
+                <Button variant="contained" size="medium" onClick={()=>dispatch(addToCart(product,cart))} >
                     <Typography style={{fontSize:'12px'}}>
                         Buy
                     </Typography>
