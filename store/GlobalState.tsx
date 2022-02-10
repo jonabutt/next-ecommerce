@@ -2,7 +2,7 @@ import { createContext , useEffect, useReducer } from 'react';
 import { getData } from '../utils/fetchAPI';
 import {ActionKind} from './Actions';
 import reducers,{ContextProps} from './Reducers';
-import { CartItem } from '../interfaces';
+import { CartItemType } from '../interfaces';
 
 interface Props {
     children: React.ReactNode
@@ -11,7 +11,7 @@ interface Props {
 const initialState = { 
     isLoading: false,
     auth: null,
-    cart: [] as CartItem[] 
+    cart: [] as CartItemType[] 
 }
 
 const DataContext  = createContext<{
@@ -50,7 +50,7 @@ const DataProvider:React.FC<Props> = ({children}) => {
     useEffect(() => {
         var localStorageCart = localStorage.getItem('__jbecommerce__cart');
         if(localStorageCart !== null){
-            const __jbecommerce__cart = JSON.parse(localStorageCart as string) as CartItem[];
+            const __jbecommerce__cart = JSON.parse(localStorageCart as string) as CartItemType[];
             dispatch({type: ActionKind.ADD_CART,payload:__jbecommerce__cart});
         }
     },[]);

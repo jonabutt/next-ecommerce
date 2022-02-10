@@ -1,10 +1,10 @@
-import { PayloadAuth, CartItem } from '../interfaces'
+import { PayloadAuth, CartItemType } from '../interfaces'
 import { Action, ActionKind } from './Actions'
 
 export type ContextProps = {
     isLoading: boolean,
     auth: PayloadAuth | null,
-    cart: CartItem[]
+    cart: CartItemType[]
 }
 
 const reducers = (state:ContextProps,action:Action):ContextProps=>{
@@ -22,7 +22,7 @@ const reducers = (state:ContextProps,action:Action):ContextProps=>{
         case ActionKind.ADD_CART:
             return {
                 ...state,
-                cart: action.payload as Array<CartItem>
+                cart: action.payload as Array<CartItemType>
             };
         default:
             return state;

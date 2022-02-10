@@ -4,6 +4,7 @@ import Head from 'next/head'
 import { DataContext } from '../store/GlobalState'
 import Image from 'next/image'
 import { Box } from '@mui/material'
+import CartItem from '../components/CartItem'
 
 const Cart: NextPage = () => {
   const { state, dispatch } = useContext(DataContext);
@@ -26,8 +27,13 @@ const Cart: NextPage = () => {
       <Head>
         Cart
       </Head>
-      <h2>Cart</h2>
+      <h2>Shopping Cart</h2>
       {
+        cart.map(c=><CartItem 
+            key={c.productId}
+            cart={c}
+          />
+        )
       }
     </>
   )

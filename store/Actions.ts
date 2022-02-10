@@ -1,6 +1,6 @@
 import { Product } from "@prisma/client";
 import toast from "react-hot-toast";
-import { PayloadAuth,CartItem } from "../interfaces";
+import { PayloadAuth,CartItemType } from "../interfaces";
 
 export enum ActionKind {
     SET_LOADING = 'SET_LOADING',
@@ -20,10 +20,10 @@ export type Action = {
 |
 {
     type: ActionKind,
-    payload: CartItem[]
+    payload: CartItemType[]
 }
 
-export const addToCart = (product:Product,cart:CartItem[]) => {
+export const addToCart = (product:Product,cart:CartItemType[]) => {
     if(product.stockAmount === 0){
         // show toast error
         toast.error("Product is out of stock!");
@@ -37,7 +37,7 @@ export const addToCart = (product:Product,cart:CartItem[]) => {
         toast.error("Product already added in cart!");
         return  ({ type: '', payload: null });
     }
-    const newCartItem:CartItem = {
+    const newCartItem:CartItemType = {
         productId: product.id,
         images: product.images,
         name: product.name,

@@ -20,7 +20,7 @@ export type JwtPayload = {
 }
 
 // used for user data in the client side
-export type CartItem = {
+export type CartItemType = {
     productId: string,
     name: string,
     price: Prisma.Decimal,
