@@ -1,12 +1,17 @@
-import { Box, Typography } from "@mui/material";
+import { useContext } from 'react';
+import { Box, Button, Typography } from "@mui/material";
 import Image from "next/image";
 import { CartItemType } from "../interfaces";
+import { DataContext } from "../store/GlobalState";
+import { increaseQuantityCartItem, decreaseQuantityCartItem } from "../store/Actions";
 
 type Props = {
-    cart: CartItemType
+    cartItem: CartItemType
 };
 
-const CartItem = ({cart}:Props) => {
+const CartItem = ({cartItem}:Props) => {
+    const { state, dispatch } = useContext(DataContext);
+    const { cart } = state;
     return <Box sx={{ 
         display: 'flex', 
         flexDirection: 'row', 
@@ -17,8 +22,8 @@ const CartItem = ({cart}:Props) => {
         }}}>
         <Box sx={{ width: '60px', position: 'relative' }}>
             <Image 
-                src={cart.images[0]}
-                alt={cart.name}
+                src={cartItem.images[0]}
+                alt={cartItem.name}
                 layout='fill'
                 objectFit='contain'
             />
@@ -27,15 +32,27 @@ const CartItem = ({cart}:Props) => {
             paddingLeft:'5px', 
             display: 'flex', 
             flexDirection: 'column', 
-            flexGrow:'1', 
+            flex: '2', 
             alignItems: 'flex-start',
             justifyContent: 'center'}}>
             <Typography variant="body1">
-                {cart.name}
+                {cartItem.name}
             </Typography>
             <Typography  color="primary" variant="body1">
-                &euro;{Number(cart.price).toFixed(2)}
+                &euro;{Number(cartItem.price).toFixed(2)}
             </Typography>
+        </Box>
+        <Box sx={{ 
+            paddingLeft:'5px', 
+            display: 'flex', 
+            flexDirection: 'row', 
+            flex: '3', 
+            alignItems: 'center'}}>
+            <Button variant="outlined" onClick={()=>dispatch(decreaseQuantityCartItem(cart,cartItem.productId))}>-</Button>
+            <Typography sx={{padding:"0 10px",width:50,textAlign: "center"}}variant="body2" color="primary">
+                {cartItem.quantity}
+            </Typography>
+            <Button variant="outlined" onClick={()=>dispatch(increaseQuantityCartItem(cart,cartItem.productId))}>+</Button>
         </Box>
     </Box>
 }

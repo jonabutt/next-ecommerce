@@ -44,6 +44,28 @@ export const addToCart = (product:Product,cart:CartItemType[]) => {
         price: product.price,
         quantity: 1
     };
-    return ({ type: 'ADD_CART', payload: [...cart,newCartItem]  }) 
+    return ({ type: ActionKind.ADD_CART, payload: [...cart,newCartItem]  });
 
+}
+
+export const increaseQuantityCartItem = (cart:CartItemType[],id:string) => {
+    const updatedCart = [...cart];
+    let cartItem = updatedCart.find(c=>c.productId===id);
+    if(cartItem!==null){
+        cartItem = cartItem as CartItemType;
+        cartItem.quantity = cartItem.quantity + 1;
+    }
+    return ({ type: ActionKind.ADD_CART, payload: updatedCart  });
+}
+
+export const decreaseQuantityCartItem = (cart:CartItemType[],id:string) => {
+    const updatedCart = [...cart];
+    let cartItem = updatedCart.find(c=>c.productId===id);
+    if(cartItem!==null){
+        cartItem = cartItem as CartItemType;
+        if(cartItem.quantity===1)
+        return ({ type: '', payload: null });
+        cartItem.quantity = cartItem.quantity - 1;
+    }
+    return ({ type: ActionKind.ADD_CART, payload: updatedCart  });
 }

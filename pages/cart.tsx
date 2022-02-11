@@ -31,7 +31,7 @@ const Cart: NextPage = () => {
       {
         cart.map(c=><CartItem 
             key={c.productId}
-            cart={c}
+            cartItem={c}
           />
         )
       }
