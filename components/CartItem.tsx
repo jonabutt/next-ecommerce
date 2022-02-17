@@ -1,10 +1,11 @@
 import { useContext } from 'react';
-import { Box, Button, Typography,Link as MUILink} from "@mui/material";
+import { Box, Button, Typography,Link as MUILink, IconButton} from "@mui/material";
 import Image from "next/image";
 import { CartItemType } from "../interfaces";
 import { DataContext } from "../store/GlobalState";
-import { increaseQuantityCartItem, decreaseQuantityCartItem } from "../store/Actions";
+import { increaseQuantityCartItem, decreaseQuantityCartItem, removeCartItem } from "../store/Actions";
 import Link from 'next/link';
+import { Delete } from '@mui/icons-material';
 
 
 type Props = {
@@ -14,6 +15,7 @@ type Props = {
 const CartItem = ({cartItem}:Props) => {
     const { state, dispatch } = useContext(DataContext);
     const { cart } = state;
+
     return <Box sx={{ 
         display: 'flex', 
         flexDirection: 'row', 
@@ -58,6 +60,15 @@ const CartItem = ({cartItem}:Props) => {
                 {cartItem.quantity}
             </Typography>
             <Button variant="outlined" onClick={()=>dispatch(increaseQuantityCartItem(cart,cartItem.productId))}>+</Button>
+        </Box>
+        <Box sx={{ width: '80px', display: 'flex'}}>
+            <IconButton
+                onClick={()=>dispatch(removeCartItem(cart,cartItem.productId))}
+                size="small"
+                sx={{ padding: 0}}
+            >
+                <Delete sx={{ width: 32 }}/>
+            </IconButton>
         </Box>
     </Box>
 }

@@ -69,3 +69,8 @@ export const decreaseQuantityCartItem = (cart:CartItemType[],id:string) => {
     }
     return ({ type: ActionKind.ADD_CART, payload: updatedCart  });
 }
+
+export const removeCartItem = (cart:CartItemType[],id:string) => {
+    const updatedCart = cart.filter(c=>c.productId!==id);
+    return ({ type: ActionKind.ADD_CART, payload: updatedCart  });
+}
