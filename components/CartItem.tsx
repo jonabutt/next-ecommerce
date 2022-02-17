@@ -48,7 +48,7 @@ const CartItem = ({cartItem}:Props) => {
             flexDirection: 'row', 
             flex: '3', 
             alignItems: 'center'}}>
-            <Button variant="outlined" onClick={()=>dispatch(decreaseQuantityCartItem(cart,cartItem.productId))}>-</Button>
+            <Button variant="outlined" disabled={cartItem.quantity===1} onClick={()=>dispatch(decreaseQuantityCartItem(cart,cartItem.productId))}>-</Button>
             <Typography sx={{padding:"0 10px",width:50,textAlign: "center"}}variant="body2" color="primary">
                 {cartItem.quantity}
             </Typography>
