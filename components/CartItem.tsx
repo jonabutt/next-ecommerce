@@ -56,16 +56,16 @@ const CartItem = ({cartItem}:Props) => {
             flex: '3', 
             alignItems: 'center'}}>
             <Button variant="outlined" disabled={cartItem.quantity===1} onClick={()=>dispatch(decreaseQuantityCartItem(cart,cartItem.productId))}>-</Button>
-            <Typography sx={{padding:"0 10px",width:50,textAlign: "center"}}variant="body2" color="primary">
+            <Typography sx={{ padding:"0 10px", width:50, textAlign: "center"}}variant="body2" color="primary">
                 {cartItem.quantity}
             </Typography>
             <Button variant="outlined" onClick={()=>dispatch(increaseQuantityCartItem(cart,cartItem.productId))}>+</Button>
         </Box>
-        <Box sx={{ width: '80px', display: 'flex'}}>
+        <Box sx={{ width: '20px', display: 'flex', margin: 0}}>
             <IconButton
                 onClick={()=>dispatch(removeCartItem(cart,cartItem.productId))}
                 size="small"
-                sx={{ padding: 0}}
+                sx={{ padding: 0, margin: 0}}
             >
                 <Delete sx={{ width: 32 }}/>
             </IconButton>

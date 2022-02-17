@@ -1,13 +1,14 @@
-import { useContext } from 'react'
+import { useContext , useEffect, useState} from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { DataContext } from '../store/GlobalState'
 import Image from 'next/image'
-import { Box } from '@mui/material'
+import { Box, Button, Grid, Typography } from '@mui/material'
 import CartItem from '../components/CartItem'
 
 const Cart: NextPage = () => {
   const { state, dispatch } = useContext(DataContext);
+  const [ total, setTotal ] = useState<Number>(0);
   const { cart } = state;
   if(cart.length === 0){
     return  <Box sx={{display: 'flex',flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
@@ -22,19 +23,42 @@ const Cart: NextPage = () => {
           height={394}/>
       </Box>
   }
+  useEffect(()=>{
+    const getTotal = () => {
+      const totalPrice = cart.reduce((prev,currItem) => {
+        return prev + (currItem.price * currItem.quantity)
+      },0);
+      setTotal(totalPrice);
+    }
+    getTotal();
+  },[cart]);
   return (
     <>
       <Head>
         Cart
       </Head>
       <h2>Shopping Cart</h2>
-      {
-        cart.map(c=><CartItem 
-            key={c.productId}
-            cartItem={c}
-          />
-        )
-      }
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={8}>
+          {
+              cart.map(c=><CartItem 
+                  key={c.productId}
+                  cartItem={c}
+                />
+              )
+          }
+        </Grid>
+        <Grid item xs={12} md={4} sx={{display: 'flex', flexDirection: 'column'}}>
+          <Box sx={{ display: 'flex' }}>
+            <Typography sx={{flex:1}} variant="h4">Total:</Typography>
+            <Typography sx={{flex:1}} variant="h4" color="primary">&euro;{total.toFixed(2)}</Typography>
+          </Box>
+          <Button sx={{ justifySelf: 'center'}}  variant="contained" size="medium">
+            Proceed with payment
+          </Button>
+        </Grid>
+      </Grid>
+      
     </>
   )
 }
