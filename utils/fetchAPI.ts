@@ -1,12 +1,16 @@
 const baseUrl = process.env.BASE_URL;
 
-export const getData = async (url:string,token:string) => {
-    const res = await fetch(`${baseUrl}/api/${url}`,{
-        method: 'GET',
-        headers: {
+export const getData = async (url:string,token?:string ) => {
+
+    const requestInit:RequestInit = {
+        method: 'GET'
+    };
+    if(token !== undefined){
+        requestInit.headers = {
             'Authorization': token
         }
-    });
+    }
+    const res = await fetch(`${baseUrl}/api/${url}`,);
 
     const resultData = await res.json();
     return resultData;
