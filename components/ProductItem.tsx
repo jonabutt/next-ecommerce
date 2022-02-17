@@ -45,10 +45,10 @@ const ProductItem = (product:Product) => {
                     </Button>
                     <Link href={`product/${product.id}`} passHref>
                         <Button variant="outlined" size="small" component="a">
-                        <Typography style={{fontSize:'12px'}} >
-                          
-                            Learn More
-                        </Typography>
+                            <Typography style={{fontSize:'12px'}} >
+                            
+                                Learn More
+                            </Typography>
                         </Button>
                     </Link>
                     

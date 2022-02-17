@@ -1,9 +1,11 @@
 import { useContext } from 'react';
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography,Link as MUILink} from "@mui/material";
 import Image from "next/image";
 import { CartItemType } from "../interfaces";
 import { DataContext } from "../store/GlobalState";
 import { increaseQuantityCartItem, decreaseQuantityCartItem } from "../store/Actions";
+import Link from 'next/link';
+
 
 type Props = {
     cartItem: CartItemType
@@ -35,9 +37,12 @@ const CartItem = ({cartItem}:Props) => {
             flex: '2', 
             alignItems: 'flex-start',
             justifyContent: 'center'}}>
-            <Typography variant="body1">
-                {cartItem.name}
-            </Typography>
+            <Link href={`/product/${cartItem.productId}`} passHref>
+                <MUILink variant="body1">
+                    {cartItem.name}
+                </MUILink>
+            </Link>
+          
             <Typography  color="primary" variant="body1">
                 &euro;{Number(cartItem.price).toFixed(2)}
             </Typography>
