@@ -1,4 +1,4 @@
-import { Box, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Product } from '@prisma/client';
 import type { NextPage } from 'next'
 import Head from 'next/head'
@@ -55,4 +55,4 @@ export async function getServerSideProps() {
 
 }
 
-export default Home
+export default Home;

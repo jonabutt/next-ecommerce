@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from 'bcrypt';
 import {PrismaClient} from '@prisma/client';
 import {createAccessToken,createRefreshToken} from '../../../utils/generateToken';
