@@ -9,7 +9,7 @@ import { validateRegister } from '../utils/validateForms';
 import {DataContext} from '../store/GlobalState';
 import toast from 'react-hot-toast';
 import {postData} from '../utils/fetchAPI';
-import ActionKind from '../store/Actions';
+import { ActionKind } from '../store/Actions';
 import { useRouter } from 'next/router';
 
 interface UserData {
