@@ -5,12 +5,12 @@ import { JwtPayload } from '../interfaces';
 
 const prisma = new PrismaClient();
 
-type ErrorResponseData = {
+export type ErrorResponseData = {
     success: boolean,
     msg: string
 }
 
-type SuccessResponseData = {
+export type SuccessResponseData = {
     success: boolean,
     id: string,
     roleId: string,
