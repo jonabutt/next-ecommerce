@@ -7,6 +7,8 @@ import { DataContext } from '../store/GlobalState';
 import { ActionKind } from '../store/Actions';
 import { validateUpdatePassword } from '../utils/validateForms';
 import toast from 'react-hot-toast';
+import { patchData } from '../utils/fetchAPI';
+import { PayloadAuth, User } from '../interfaces';
 
 interface ProfileData {
     name: string;
@@ -53,20 +55,46 @@ const Profile: NextPage = () => {
         }
     }
 
-    const updateProfile = (name: string) => {
+    const updateProfile = async (name: string) => {
         // show loading backdrop
         dispatch({ type: ActionKind.SET_LOADING, payload: true });
+        const loginToken = state.auth?.token as string;
         // call api to update name
+        const res = await patchData('/user', { name: name }, loginToken);
+        if (res.success === true) {
+            toast.success(res.msg);
+            const currentUser = state.auth?.user as User;
+            // update user object in memory
+            const authPayload: PayloadAuth = {
+                token: loginToken,
+                user: {
+                    ...currentUser,
+                    name: name
+                }
+            };
+            dispatch({ type: ActionKind.AUTH, payload: authPayload });
+        }
+        else {
+            toast.error(res.msg);
+        }
         // remove loading backdrop
-        dispatch({ type: ActionKind.SET_LOADING, payload: true });
+        dispatch({ type: ActionKind.SET_LOADING, payload: false });
     }
 
-    const updatePassword = (password: string, confirmPassword: string) => {
+    const updatePassword = async (password: string, confirmPassword: string) => {
         // show loading backdrop
         dispatch({ type: ActionKind.SET_LOADING, payload: true });
+        const loginToken = state.auth?.token as string;
         // call api to update password
+        const res = await patchData('/user/resetPassword', { password: password }, loginToken);
+        if (res.success === true) {
+            toast.success(res.msg);
+        }
+        else {
+            toast.error(res.msg);
+        }
         // remove loading backdrop
-        dispatch({ type: ActionKind.SET_LOADING, payload: true });
+        dispatch({ type: ActionKind.SET_LOADING, payload: false });
     }
 
     const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -130,7 +158,7 @@ const Profile: NextPage = () => {
                                 placeholder='Enter Email'
                             />
                         </FormControl>
-                        <FormControl sx={{ m: 1 }} fullWidth variant="outlined" required>
+                        <FormControl sx={{ m: 1 }} fullWidth variant="outlined">
                             <InputLabel htmlFor="userdata-password">Password</InputLabel>
 
                             <OutlinedInput
@@ -155,7 +183,7 @@ const Profile: NextPage = () => {
                             />
                         </FormControl>
 
-                        <FormControl sx={{ m: 1 }} fullWidth variant="outlined" required>
+                        <FormControl sx={{ m: 1 }} fullWidth variant="outlined">
                             <InputLabel htmlFor="userdata-confirmpassword">Confirm Password</InputLabel>
 
                             <OutlinedInput
