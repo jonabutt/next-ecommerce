@@ -10,36 +10,38 @@ import { DataContext } from '../../store/GlobalState';
 import { addToCart } from '../../store/Actions';
 
 type PageProps = {
-    product : Product
+    product: Product
 }
 
-const ProductDetails: NextPage<PageProps> = ({product}) => {
-    const [mainImage,setMainImage] = useState(product.images[0]);
-    const stockText = product.stockAmount===0?"Out of Stock!":`In Stock: ${product.stockAmount}`;
+const ProductDetails: NextPage<PageProps> = ({ product }) => {
+    const [mainImage, setMainImage] = useState(product.images[0]);
+    const stockText = product.stockAmount === 0 ? "Out of Stock!" : `In Stock: ${product.stockAmount}`;
     const { state, dispatch } = useContext(DataContext);
     const { cart } = state;
     return <>
         <Head>
-            Product Details
+            <title>
+                Product Details
+            </title>
         </Head>
         <Grid container spacing={1.5}>
             <Grid item xs={6}>
-                <ImageItem 
-                    src={mainImage} 
-                    alt="" 
+                <ImageItem
+                    src={mainImage}
+                    alt=""
                     width={"100%"}
                     height={"350px"}
                     objectFit="contain"
                     currentImgSelected=""
                 />
-                <Box sx={{ display: 'flex',overflowX: 'auto',flexDirection:'row',flexWrap: 'nowrap',gap:'5px'}}>
+                <Box sx={{ display: 'flex', overflowX: 'auto', flexDirection: 'row', flexWrap: 'nowrap', gap: '5px' }}>
                     {
-                        product.images.map((imgLink,i)=>(
-                            <ImageItem 
+                        product.images.map((imgLink, i) => (
+                            <ImageItem
                                 key={i}
-                                src={imgLink} 
-                                alt="" 
-                                onClick={(imgUrl)=>setMainImage(imgUrl)}
+                                src={imgLink}
+                                alt=""
+                                onClick={(imgUrl) => setMainImage(imgUrl)}
                                 width={100}
                                 height={100}
                                 objectFit="cover"
@@ -62,7 +64,7 @@ const ProductDetails: NextPage<PageProps> = ({product}) => {
                             {stockText}
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}  display="flex" justifyContent="flex-end">
+                    <Grid item xs={6} display="flex" justifyContent="flex-end">
                         <Typography component="span" color="primary">
                             Sold: {product.soldCount}
                         </Typography>
@@ -74,8 +76,8 @@ const ProductDetails: NextPage<PageProps> = ({product}) => {
                 <Typography paragraph={true} variant="body2">
                     {product.content}
                 </Typography>
-                <Button variant="contained" size="medium" onClick={()=>dispatch(addToCart(product,cart))} >
-                    <Typography style={{fontSize:'12px'}}>
+                <Button variant="contained" size="medium" onClick={() => dispatch(addToCart(product, cart))} >
+                    <Typography style={{ fontSize: '12px' }}>
                         Buy
                     </Typography>
                 </Button>
@@ -92,13 +94,13 @@ type Params = {
     params: Props
 }
 
-export const getServerSideProps = async({params:{id}}:Params) => {
-    const res = await getData(`product/${id}`,'');
+export const getServerSideProps = async ({ params: { id } }: Params) => {
+    const res = await getData(`product/${id}`, '');
     return {
         props: {
             product: res.product as Product
         }, // will be passed to the page component as props
     }
-  }
-  
+}
+
 export default ProductDetails;

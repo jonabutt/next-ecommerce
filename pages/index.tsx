@@ -9,35 +9,37 @@ type Props = {
   products: Product[]
 }
 
-const Home: NextPage<Props> = ({products}) => {
+const Home: NextPage<Props> = ({ products }) => {
   return (
     <>
       <Head>
-        Home Page
+        <title>
+          Home Page
+        </title>
       </Head>
       <Grid container spacing={2}>
         {
-          products.length ===0 
-          ?<h2>No Products</h2>:
-          products.map(p=>
-            <ProductItem 
-              key={p.id} 
-              id={p.id} 
-              name={p.name} 
-              price={p.price} 
-              description={p.description} 
-              content={p.content} 
-              checked={p.checked} 
-              stockAmount={p.stockAmount} 
-              soldCount={p.soldCount} 
-              images={p.images} 
-              dateCreated={p.dateCreated} 
-              categoryId={p.categoryId} 
-            />
-          )
+          products.length === 0
+            ? <h2>No Products</h2> :
+            products.map(p =>
+              <ProductItem
+                key={p.id}
+                id={p.id}
+                name={p.name}
+                price={p.price}
+                description={p.description}
+                content={p.content}
+                checked={p.checked}
+                stockAmount={p.stockAmount}
+                soldCount={p.soldCount}
+                images={p.images}
+                dateCreated={p.dateCreated}
+                categoryId={p.categoryId}
+              />
+            )
         }
       </Grid>
-      
+
     </>
   )
 }

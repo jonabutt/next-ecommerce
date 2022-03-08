@@ -83,7 +83,9 @@ const Cart: NextPage = () => {
   if (cart.length === 0) {
     return <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
       <Head>
-        Cart
+        <title>
+          Cart
+        </title>
       </Head>
       <h2>No Items in Cart</h2>
       <Image src={"/empty-cart.png"}
