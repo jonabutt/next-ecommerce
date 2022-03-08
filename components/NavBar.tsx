@@ -1,10 +1,10 @@
-import React,{useContext} from 'react'
-import { AppBar, Avatar, Badge, Box, Divider, IconButton,Link as MUILink,  ListItemIcon,  Menu,  MenuItem,  Toolbar, Tooltip, Typography } from "@mui/material"
+import React, { useContext } from 'react'
+import { AppBar, Avatar, Badge, Box, Divider, IconButton, Link as MUILink, ListItemIcon, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu';
 import Link from "next/link";
 import { useRouter } from 'next/router';
 import { DataContext } from '../store/GlobalState';
-import { Logout , ShoppingCart, Person } from '@mui/icons-material';
+import { Logout, ShoppingCart, Person } from '@mui/icons-material';
 import toast from 'react-hot-toast';
 import { ActionKind } from '../store/Actions';
 import Cookie from 'js-cookie';
@@ -12,13 +12,13 @@ import Cookie from 'js-cookie';
 const NavBar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState<HTMLElement | null>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<HTMLElement | null>(null);
-   
+
     const [anchorElProfile, setAnchorElProfile] = React.useState<HTMLElement | null>(null);
     const profileIsOpen = Boolean(anchorElProfile);
 
     const router = useRouter();
-    const {state,dispatch} = useContext(DataContext);
-    const {auth,cart} = state;
+    const { state, dispatch } = useContext(DataContext);
+    const { auth, cart } = state;
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -41,7 +41,7 @@ const NavBar = () => {
 
     const handleLogout = () => {
         // remove cookie and local storage
-        Cookie.remove('refreshToken',{path:'api/auth/accessToken'})
+        Cookie.remove('refreshToken', { path: 'api/auth/accessToken' })
         localStorage.removeItem('firstLogin');
         // reset the userdetails in the Global store
         dispatch({ type: ActionKind.AUTH, payload: null });
@@ -51,20 +51,20 @@ const NavBar = () => {
         return router.push('/');
     };
 
-    const isActive = (r:String) => {
-        if(r===router.pathname){
+    const isActive = (r: String) => {
+        if (r === router.pathname) {
             return true;
         }
         return false;
     }
     const loggedRouter = () => {
-        return(
+        return (
             <>
                 <Tooltip title="Account settings">
                     <IconButton
                         onClick={handleProfileClick}
                         size="small"
-                        sx={{ ml: 2 , padding: 0}}
+                        sx={{ ml: 2, padding: 0 }}
                         aria-controls={profileIsOpen ? 'account-menu' : undefined}
                         aria-haspopup="true"
                         aria-expanded={profileIsOpen ? 'true' : undefined}
@@ -81,10 +81,10 @@ const NavBar = () => {
                     PaperProps={{
                         elevation: 0,
                         sx: {
-                                overflow: 'visible',
-                                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                                mt: 1.5,
-                                '& .MuiAvatar-root': {
+                            overflow: 'visible',
+                            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                            mt: 1.5,
+                            '& .MuiAvatar-root': {
                                 width: 32,
                                 height: 32,
                                 ml: -0.5,
@@ -107,9 +107,13 @@ const NavBar = () => {
                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                 >
-                    <MenuItem>
-                        <Avatar /> Profile
-                    </MenuItem>
+                    <Link href="/profile" passHref>
+                        <MUILink color="inherit" underline="none">
+                            <MenuItem>
+                                <Avatar /> Profile
+                            </MenuItem>
+                        </MUILink>
+                    </Link>
                     <Divider />
                     <MenuItem onClick={handleLogout}>
                         <ListItemIcon>
@@ -119,7 +123,7 @@ const NavBar = () => {
                     </MenuItem>
                 </Menu>
             </>
-            
+
 
 
         )
@@ -173,11 +177,11 @@ const NavBar = () => {
                             display: { xs: 'block', md: 'none' },
                         }}
                     >
-                       <Link href="/cart" passHref>
+                        <Link href="/cart" passHref>
                             <MUILink color="inherit" underline="none">
                                 <MenuItem justify-self="flex-end" onClick={handleCloseNavMenu}>
                                     <Badge badgeContent={cart.length} color="error">
-                                        <ShoppingCart/>
+                                        <ShoppingCart />
                                     </Badge>
                                     <Typography textAlign="center">Cart</Typography>
                                 </MenuItem>
@@ -186,7 +190,7 @@ const NavBar = () => {
                         <Link href="/signin" passHref>
                             <MUILink color="inherit" underline="none">
                                 <MenuItem selected={true} justify-self="flex-end" onClick={handleCloseNavMenu}>
-                                    <Person/>
+                                    <Person />
                                     <Typography textAlign="center">Sign in</Typography>
                                 </MenuItem>
                             </MUILink>
@@ -201,38 +205,42 @@ const NavBar = () => {
                 >
                     JB E-Commerce
                 </Typography>
-                <Box sx={{ flexGrow: 1,justifyContent:"flex-end", display: { xs: 'none', md: 'flex' } }}>
+                <Box sx={{ flexGrow: 1, justifyContent: "flex-end", display: { xs: 'none', md: 'flex' } }}>
                     <Link href="/cart" passHref>
                         <MUILink color="inherit" underline="none">
-                            <MenuItem sx={{ "&&.Mui-selected": {
+                            <MenuItem sx={{
+                                "&&.Mui-selected": {
                                     backgroundColor: "#001F5E"
-                                }}} selected={isActive("/cart")} justify-self="flex-end" onClick={handleCloseNavMenu}>
+                                }
+                            }} selected={isActive("/cart")} justify-self="flex-end" onClick={handleCloseNavMenu}>
                                 <Badge badgeContent={cart.length} color="error">
-                                    <ShoppingCart/>
+                                    <ShoppingCart />
                                 </Badge>
                                 <Typography textAlign="center">Cart</Typography>
                             </MenuItem>
                         </MUILink>
                     </Link>
-                    
+
                     {
-                        (auth === null)   ?
-                        <Link href="/signin" passHref>
-                            <MUILink color="inherit" underline="none">
-                                <MenuItem sx={{ "&&.Mui-selected": {
-                                        backgroundColor: "#001F5E"
-                                    }}} selected={isActive("/signin")} justify-self="flex-end" onClick={handleCloseNavMenu}>
-                                    <Person/>
-                                    <Typography textAlign="center">Sign in</Typography>
-                                </MenuItem>
-                            </MUILink>
-                        </Link>                    
-                        :
-                        loggedRouter()
+                        (auth === null) ?
+                            <Link href="/signin" passHref>
+                                <MUILink color="inherit" underline="none">
+                                    <MenuItem sx={{
+                                        "&&.Mui-selected": {
+                                            backgroundColor: "#001F5E"
+                                        }
+                                    }} selected={isActive("/signin")} justify-self="flex-end" onClick={handleCloseNavMenu}>
+                                        <Person />
+                                        <Typography textAlign="center">Sign in</Typography>
+                                    </MenuItem>
+                                </MUILink>
+                            </Link>
+                            :
+                            loggedRouter()
                     }
-                    
+
                 </Box>
-                
+
             </Toolbar>
         </AppBar>
     )
