@@ -30,12 +30,11 @@ const login = async (
     req: NextApiRequest,
     res: NextApiResponse<ResponseData>) => {
     try {
-        const { email, password } = req.body;
-
+        const { username, password } = req.body;
         // find user in database with same email and password
         const user = await prisma.user.findFirst({
             where: {
-                email: email
+                email: username
             }
         });
         if (user === null) {
@@ -56,7 +55,6 @@ const login = async (
             roleId: user.roleId,
             isRoot: user.isRoot
         };
-
         res.json({
             success: true,
             msg: "Login Success!",
