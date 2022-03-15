@@ -12,11 +12,6 @@ const validateRegister = (name: string, email: string, password: string, confirm
         return 'Passwords did not match.'
 }
 
-const validateProfile = (name: string) => {
-    if (name === '')
-        return 'Name cannot be left empty.'
-}
-
 const validateUpdatePassword = (password: string, confirmPassword: string) => {
     if (password.length < 6)
         return 'Password must be at least 6 characters.'
@@ -30,4 +25,4 @@ function validateEmail(email: string) {
     return re.test(email);
 }
 
-export { validateRegister, validateUpdatePassword, validateProfile }
+export { validateRegister, validateUpdatePassword }

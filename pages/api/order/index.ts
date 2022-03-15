@@ -10,16 +10,59 @@ type SuccessResponseData = {
     msg: string,
     orderId: string
 }
-
+type GetOrdersSuccessResponseData = {
+    success: boolean,
+    orders: Order[]
+}
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<MiddlewareErrorResponseData | MiddlewareSuccessResponseData | SuccessResponseData>
+    res: NextApiResponse<MiddlewareErrorResponseData | MiddlewareSuccessResponseData | SuccessResponseData | GetOrdersSuccessResponseData>
 ) {
 
     switch (req.method) {
         case "POST":
             await createOrder(req, res)
             break;
+        case "GET":
+            await getOrder(req, res)
+            break;
+    }
+}
+
+const getOrder = async (
+    req: NextApiRequest,
+    res: NextApiResponse<MiddlewareErrorResponseData | MiddlewareSuccessResponseData | GetOrdersSuccessResponseData>) => {
+    try {
+        // check if the user is authorized
+        const result = await auth(req, res) as MiddlewareSuccessResponseData;
+        // get orders
+        let orders: Order[] = [];
+        if (result.isRoot === true) {
+            // if it root get all orders
+            orders = await prisma.order.findMany({});
+        }
+        else {
+            // if not root get only user orders
+            orders = await prisma.order.findMany({
+                where: {
+                    userId: result.id
+                }
+            });
+        }
+
+        // return orders
+        res.json({
+            success: true,
+            orders: orders
+        });
+
+    } catch (err) {
+        // show error message if there is an error
+        if (typeof err === "string") {
+            return res.status(500).json({ success: false, msg: err });
+        } else if (err instanceof Error) {
+            return res.status(500).json({ success: false, msg: (err as Error).message });
+        }
     }
 }
 
