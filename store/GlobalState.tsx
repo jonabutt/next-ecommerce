@@ -2,8 +2,7 @@ import { createContext, useEffect, useReducer } from 'react';
 import { getData } from '../utils/fetchAPI';
 import { ActionKind } from './Actions';
 import reducers, { ContextProps } from './Reducers';
-import { CartItemType } from '../interfaces';
-import { Order } from '@prisma/client';
+import { CartItemType, OrderDTO } from '../interfaces';
 
 interface Props {
     children: React.ReactNode
@@ -12,7 +11,7 @@ interface Props {
 const initialState = {
     isLoading: false,
     auth: null,
-    orders: [] as Order[],
+    orders: [] as OrderDTO[],
     cart: [] as CartItemType[]
 }
 
@@ -65,10 +64,11 @@ const DataProvider: React.FC<Props> = ({ children }) => {
     useEffect(() => {
         // check if user logged in
         if (auth !== null) {
+
             // get orders depending on the user
             getData('order', auth.token)
                 .then(res => {
-                    if (res.succes === true) {
+                    if (res.success === true) {
                         dispatch({ type: ActionKind.ADD_ORDERS, payload: res.orders });
                     }
                 });

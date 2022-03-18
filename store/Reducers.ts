@@ -1,11 +1,10 @@
-import { Order } from '@prisma/client'
-import { PayloadAuth, CartItemType } from '../interfaces'
+import { PayloadAuth, CartItemType, OrderDTO } from '../interfaces'
 import { Action, ActionKind } from './Actions'
 
 export type ContextProps = {
     isLoading: boolean,
     auth: PayloadAuth | null,
-    orders: Order[],
+    orders: OrderDTO[],
     cart: CartItemType[]
 }
 
@@ -29,7 +28,7 @@ const reducers = (state: ContextProps, action: Action): ContextProps => {
         case ActionKind.ADD_ORDERS:
             return {
                 ...state,
-                orders: action.payload as Array<Order>
+                orders: action.payload as Array<OrderDTO>
             };
         default:
             return state;

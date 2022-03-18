@@ -9,6 +9,7 @@ import { validateUpdatePassword } from '../utils/validateForms';
 import toast from 'react-hot-toast';
 import { patchData } from '../utils/fetchAPI';
 import { PayloadAuth, User } from '../interfaces';
+import OrderItem from '../components/OrderItem';
 
 interface ProfileData {
     name: string;
@@ -132,7 +133,7 @@ const Profile: NextPage = () => {
                 <title>Profile</title>
             </Head>
             <Grid container spacing={2}>
-                <Grid item xs={4}>
+                <Grid item md={4} sm={12}>
                     <h3>Profile</h3>
                     <form onSubmit={handleSubmit}>
                         <FormControl sx={{ m: 1 }} fullWidth variant="outlined" required>
@@ -210,8 +211,14 @@ const Profile: NextPage = () => {
                         <Button type="submit" color="primary" fullWidth>Update</Button>
                     </form>
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item md={8} sm={12}>
                     <h3>Orders</h3>
+                    {state.orders.map((order) => (
+                        <OrderItem
+                            key={order.id}
+                            orderItem={order}
+                        />
+                    ))}
                 </Grid>
             </Grid>
         </>

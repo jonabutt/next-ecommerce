@@ -39,17 +39,35 @@ const getOrder = async (
         let orders: Order[] = [];
         if (result.isRoot === true) {
             // if it root get all orders
-            orders = await prisma.order.findMany({});
+            orders = await prisma.order.findMany({
+                include: {
+                    orderDetails: {
+                        include: {
+                            Product: true
+                        }
+                    },
+                    User: {
+                        select: {
+                            name: true,
+                            email: true,
+                            roleId: true,
+                        }
+                    }
+                }
+            });
         }
         else {
             // if not root get only user orders
             orders = await prisma.order.findMany({
                 where: {
                     userId: result.id
+                },
+                include: {
+                    orderDetails: true,
+                    User: true
                 }
             });
         }
-
         // return orders
         res.json({
             success: true,
