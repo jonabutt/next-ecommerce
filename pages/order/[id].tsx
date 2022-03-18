@@ -47,7 +47,9 @@ const OrderDetails = () => {
                     &&
                     <>
                         <h4>Order Items</h4>
-                        {order.orderDetails.map(od => <OrderDetailItem orderDetailItem={od} />)}
+                        {order.orderDetails.map(od =>
+                            <OrderDetailItem key={od.id} orderDetailItem={od} />
+                        )}
                     </>
                 }
                 <Box>

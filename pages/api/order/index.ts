@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 type SuccessResponseData = {
     success: boolean,
     msg: string,
-    orderId: string
+    orderAdded: Order | null
 }
 type GetOrdersSuccessResponseData = {
     success: boolean,
@@ -63,8 +63,18 @@ const getOrder = async (
                     userId: result.id
                 },
                 include: {
-                    orderDetails: true,
-                    User: true
+                    orderDetails: {
+                        include: {
+                            Product: true
+                        }
+                    },
+                    User: {
+                        select: {
+                            name: true,
+                            email: true,
+                            roleId: true,
+                        }
+                    }
                 }
             });
         }
@@ -124,12 +134,31 @@ const createOrder = async (
         });
         // update and insert using transaction
         await prisma.$transaction([...updateProductsPromises, createOrderPromise]);
-
+        const orderId = (await createOrderPromise).id;
+        const order: Order | null = await prisma.order.findUnique({
+            where: {
+                id: orderId
+            },
+            include: {
+                orderDetails: {
+                    include: {
+                        Product: true
+                    }
+                },
+                User: {
+                    select: {
+                        name: true,
+                        email: true,
+                        roleId: true,
+                    }
+                }
+            }
+        });
         // return created order id and success message
         res.json({
             success: true,
             msg: 'Order success! We will contact you to confirm the order.',
-            orderId: (await createOrderPromise).id
+            orderAdded: order
         })
 
     } catch (err) {

@@ -14,7 +14,7 @@ import { useRouter } from 'next/router';
 const Cart: NextPage = () => {
   const { state, dispatch } = useContext(DataContext);
   const [total, setTotal] = useState<Number>(0);
-  const { cart, auth } = state;
+  const { cart, auth, orders } = state;
   const router = useRouter();
 
   useEffect(() => {
@@ -68,13 +68,13 @@ const Cart: NextPage = () => {
           toast.error(res.msg);
         }
         else {
-          // remove cart
+          // reset cart
           dispatch({ type: ActionKind.ADD_CART, payload: [] });
           // add order to order list in the memory
-
+          dispatch({ type: ActionKind.ADD_ORDERS, payload: [...orders, res.orderAdded] });
           toast.success(res.msg);
           // redirect to the order details page
-          return router.push(`/order`)
+          return router.push(`/order/${res.orderAdded.id}`);
         }
 
 
