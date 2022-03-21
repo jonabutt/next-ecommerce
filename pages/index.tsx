@@ -17,7 +17,7 @@ const Home: NextPage<Props> = ({ products }) => {
           Home Page
         </title>
       </Head>
-      <Grid container spacing={2}>
+      <Grid pt={1} container spacing={2}>
         {
           products.length === 0
             ? <h2>No Products</h2> :
