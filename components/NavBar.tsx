@@ -5,6 +5,9 @@ import Link from "next/link";
 import { useRouter } from 'next/router';
 import { DataContext } from '../store/GlobalState';
 import { Logout, ShoppingCart, Person } from '@mui/icons-material';
+import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
+import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import toast from 'react-hot-toast';
 import { ActionKind } from '../store/Actions';
 import Cookie from 'js-cookie';
@@ -57,6 +60,79 @@ const NavBar = () => {
         }
         return false;
     }
+    const loggedOffRouter = () => {
+        return <>
+            <Link href="/signin" passHref>
+                <MUILink color="inherit" underline="none">
+                    <MenuItem sx={{
+                        "&&.Mui-selected": {
+                            backgroundColor: "#001F5E"
+                        }
+                    }} selected={isActive("/signin")} justify-self="flex-end" onClick={handleCloseNavMenu}>
+                        <Person />
+                        <Typography textAlign="center">Sign in</Typography>
+                    </MenuItem>
+                </MUILink>
+            </Link>
+        </>
+    }
+    const adminRouter = () => {
+        return <>
+            <Link href="/users" passHref>
+                <MUILink color="inherit" underline="none">
+                    <MenuItem>
+                        <ListItemIcon>
+                            <PeopleOutlineOutlinedIcon />
+                        </ListItemIcon>
+                        Users
+                    </MenuItem>
+                </MUILink>
+            </Link>
+            <Link href="/products" passHref>
+                <MUILink color="inherit" underline="none">
+                    <MenuItem>
+                        <ListItemIcon>
+                            <Inventory2OutlinedIcon />
+                        </ListItemIcon>
+                        Products
+                    </MenuItem>
+                </MUILink>
+            </Link>
+            <Link href="/categories" passHref>
+                <MUILink color="inherit" underline="none">
+                    <MenuItem>
+                        <ListItemIcon>
+                            <CategoryOutlinedIcon />
+                        </ListItemIcon>
+                        Categories
+                    </MenuItem>
+                </MUILink>
+            </Link>
+        </>
+    }
+    const loggedMenuItems = () => {
+        return <>
+            <Link href="/profile" passHref>
+                <MUILink color="inherit" underline="none">
+                    <MenuItem>
+                        <Avatar /> Profile
+                    </MenuItem>
+                </MUILink>
+            </Link>
+            {
+                auth?.user.isRoot ?
+                    adminRouter() :
+                    undefined
+            }
+            <Divider />
+            <MenuItem onClick={handleLogout}>
+                <ListItemIcon>
+                    <Logout fontSize="small" />
+                </ListItemIcon>
+                Logout
+            </MenuItem>
+        </>
+    }
     const loggedRouter = () => {
         return (
             <>
@@ -107,20 +183,26 @@ const NavBar = () => {
                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                 >
-                    <Link href="/profile" passHref>
+                    {loggedMenuItems()}
+                    {/* <Link href="/profile" passHref>
                         <MUILink color="inherit" underline="none">
                             <MenuItem>
                                 <Avatar /> Profile
                             </MenuItem>
                         </MUILink>
-                    </Link>
-                    <Divider />
+                    </Link> */}
+                    {
+                        // auth?.user.isRoot ?
+                        //     adminRouter() :
+                        //     undefined
+                    }
+                    {/* <Divider />
                     <MenuItem onClick={handleLogout}>
                         <ListItemIcon>
                             <Logout fontSize="small" />
                         </ListItemIcon>
                         Logout
-                    </MenuItem>
+                    </MenuItem> */}
                 </Menu>
             </>
 
@@ -128,6 +210,7 @@ const NavBar = () => {
 
         )
     }
+
     return (
         <AppBar position="static">
             <Toolbar variant="dense">
@@ -142,7 +225,7 @@ const NavBar = () => {
                             component="div"
                             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
                         >
-                            JB E-Commerce1
+                            JB E-Commerce
                         </Typography>
                     </MUILink>
                 </Link>
@@ -177,34 +260,47 @@ const NavBar = () => {
                             display: { xs: 'block', md: 'none' },
                         }}
                     >
-                        <Link href="/cart" passHref>
-                            <MUILink color="inherit" underline="none">
-                                <MenuItem justify-self="flex-end" onClick={handleCloseNavMenu}>
-                                    <Badge badgeContent={cart.length} color="error">
-                                        <ShoppingCart />
-                                    </Badge>
-                                    <Typography textAlign="center">Cart</Typography>
-                                </MenuItem>
-                            </MUILink>
-                        </Link>
-                        <Link href="/signin" passHref>
-                            <MUILink color="inherit" underline="none">
-                                <MenuItem selected={true} justify-self="flex-end" onClick={handleCloseNavMenu}>
-                                    <Person />
-                                    <Typography textAlign="center">Sign in</Typography>
-                                </MenuItem>
-                            </MUILink>
-                        </Link>
+
+                        {
+                            (auth === null) ?
+                                <>
+                                    <Link href="/signin" passHref>
+                                        <MUILink color="inherit" underline="none">
+                                            <MenuItem selected={true} justify-self="flex-end" onClick={handleCloseNavMenu}>
+                                                <Person />
+                                                <Typography textAlign="center">Sign in</Typography>
+                                            </MenuItem>
+                                        </MUILink>
+                                    </Link>
+
+                                    <Link href="/cart" passHref>
+                                        <MUILink color="inherit" underline="none">
+                                            <MenuItem justify-self="flex-end" onClick={handleCloseNavMenu}>
+                                                <Badge badgeContent={cart.length} color="error">
+                                                    <ShoppingCart />
+                                                </Badge>
+                                                <Typography textAlign="center">Cart</Typography>
+                                            </MenuItem>
+                                        </MUILink>
+                                    </Link>
+                                </>
+                                :
+                                loggedMenuItems()
+                        }
                     </Menu>
                 </Box>
-                <Typography
-                    variant="h6"
-                    noWrap
-                    component="div"
-                    sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-                >
-                    JB E-Commerce
-                </Typography>
+                <Link href="/" passHref>
+                    <MUILink color="inherit" underline="none">
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+                        >
+                            JB E-Commerce
+                        </Typography>
+                    </MUILink>
+                </Link>
                 <Box sx={{ flexGrow: 1, justifyContent: "flex-end", display: { xs: 'none', md: 'flex' } }}>
                     <Link href="/cart" passHref>
                         <MUILink color="inherit" underline="none">
@@ -223,18 +319,7 @@ const NavBar = () => {
 
                     {
                         (auth === null) ?
-                            <Link href="/signin" passHref>
-                                <MUILink color="inherit" underline="none">
-                                    <MenuItem sx={{
-                                        "&&.Mui-selected": {
-                                            backgroundColor: "#001F5E"
-                                        }
-                                    }} selected={isActive("/signin")} justify-self="flex-end" onClick={handleCloseNavMenu}>
-                                        <Person />
-                                        <Typography textAlign="center">Sign in</Typography>
-                                    </MenuItem>
-                                </MUILink>
-                            </Link>
+                            loggedOffRouter()
                             :
                             loggedRouter()
                     }
