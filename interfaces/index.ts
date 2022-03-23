@@ -60,3 +60,12 @@ export type ProductDTO = {
     dateCreated: Date;
     categoryId: string;
 }
+
+export type UserDTO = {
+    id: string;
+    name: string;
+    email: string;
+    dateCreated: Date;
+    roleId: string;
+    isRoot: boolean;
+}
