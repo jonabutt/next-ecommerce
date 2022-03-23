@@ -2,7 +2,7 @@ import { createContext, useEffect, useReducer } from 'react';
 import { getData } from '../utils/fetchAPI';
 import { ActionKind } from './Actions';
 import reducers, { ContextProps } from './Reducers';
-import { CartItemType, OrderDTO } from '../interfaces';
+import { CartItemType, OrderDTO, UserDTO } from '../interfaces';
 
 interface Props {
     children: React.ReactNode
@@ -12,7 +12,8 @@ const initialState = {
     isLoading: false,
     auth: null,
     orders: [] as OrderDTO[],
-    cart: [] as CartItemType[]
+    cart: [] as CartItemType[],
+    users: [] as UserDTO[]
 }
 
 const DataContext = createContext<{
@@ -72,6 +73,19 @@ const DataProvider: React.FC<Props> = ({ children }) => {
                         dispatch({ type: ActionKind.ADD_ORDERS, payload: res.orders });
                     }
                 });
+            // check if the role of the user is admin
+            if (auth.user.roleId === 'ckzqt1gxo0081psu7ap73rabs') {
+                getData('user', auth.token)
+                    .then(res => {
+                        if (res.success === true) {
+                            dispatch({ type: ActionKind.ADD_USERS, payload: res.users });
+                        }
+                    });
+            }
+        }
+        else {
+            dispatch({ type: ActionKind.ADD_ORDERS, payload: [] });
+            dispatch({ type: ActionKind.ADD_USERS, payload: [] });
         }
     }, [auth]);
 

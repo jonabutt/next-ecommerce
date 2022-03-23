@@ -1,12 +1,13 @@
 import { Order, Product } from "@prisma/client";
 import toast from "react-hot-toast";
-import { PayloadAuth, CartItemType } from "../interfaces";
+import { PayloadAuth, CartItemType, UserDTO } from "../interfaces";
 
 export enum ActionKind {
     SET_LOADING = 'SET_LOADING',
     AUTH = 'AUTH',
     ADD_CART = 'ADD_CART',
-    ADD_ORDERS = 'ADD_ORDERS'
+    ADD_ORDERS = 'ADD_ORDERS',
+    ADD_USERS = 'ADD_USERS'
 }
 
 export type Action = {
@@ -26,7 +27,12 @@ export type Action = {
 {
     type: ActionKind,
     payload: Order[]
+} |
+{
+    type: ActionKind,
+    payload: UserDTO[]
 }
+
 
 export const addToCart = (product: Product, cart: CartItemType[]) => {
     if (product.stockAmount === 0) {
