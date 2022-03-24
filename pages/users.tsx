@@ -2,8 +2,9 @@ import { useContext } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { DataContext } from '../store/GlobalState';
-import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Link as MUILink, } from '@mui/material';
 import { Box } from '@mui/system';
+import Link from 'next/link';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckIcon from '@mui/icons-material/Check';
@@ -62,9 +63,14 @@ const Users: NextPage = () => {
                                         </TableCell>
                                         <TableCell>
                                             <>
-                                                <IconButton>
-                                                    <EditIcon color="primary" />
-                                                </IconButton>
+                                                <Link href={`/editUser/${u.id}`} passHref>
+                                                    <MUILink variant="body1">
+                                                        <IconButton>
+                                                            <EditIcon color="primary" />
+                                                        </IconButton>
+                                                    </MUILink>
+                                                </Link>
+
                                                 <IconButton>
                                                     <DeleteIcon color="error" />
                                                 </IconButton>
