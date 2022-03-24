@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { Button } from '@mui/material';
-import { OrderDetailDTO, OrderDTO } from '../../interfaces';
+import { OrderDTO } from '../../interfaces';
 import OrderDetailItem from '../../components/OrderDetailItem';
 import { Box } from '@mui/system';
 import { displayDate, displayMoney } from '../../utils/internationalizationUtils';
