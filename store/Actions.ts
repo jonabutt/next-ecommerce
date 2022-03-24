@@ -93,5 +93,9 @@ export const updateUserRole = (users: UserDTO[], userId: string, roleId: string)
         userToUpdate.roleId = roleId;
         return ({ type: ActionKind.ADD_USERS, payload: updatedUsers });
     }
+}
 
+export const removeUser = (users: UserDTO[], userId: string) => {
+    const updatedUsers = users.filter(u => u.id !== userId);
+    return ({ type: ActionKind.ADD_USERS, payload: updatedUsers });
 }
