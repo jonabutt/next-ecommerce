@@ -2,7 +2,7 @@ import { createContext, useEffect, useReducer } from 'react';
 import { getData } from '../utils/fetchAPI';
 import { ActionKind } from './Actions';
 import reducers, { ContextProps } from './Reducers';
-import { CartItemType, OrderDTO, UserDTO } from '../interfaces';
+import { CartItemType, CategoryDTO, OrderDTO, UserDTO } from '../interfaces';
 
 interface Props {
     children: React.ReactNode
@@ -13,7 +13,8 @@ const initialState = {
     auth: null,
     orders: [] as OrderDTO[],
     cart: [] as CartItemType[],
-    users: [] as UserDTO[]
+    users: [] as UserDTO[],
+    categories: [] as CategoryDTO[],
 }
 
 const DataContext = createContext<{
@@ -46,7 +47,12 @@ const DataProvider: React.FC<Props> = ({ children }) => {
                 })
             })
         }
-
+        getData("categories")
+            .then(res => {
+                if (res.success) {
+                    dispatch({ type: ActionKind.ADD_CATEGORIES, payload: res.categories });
+                }
+            })
     }, []);
 
     useEffect(() => {

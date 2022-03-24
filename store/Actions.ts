@@ -1,13 +1,14 @@
 import { Order, Product } from "@prisma/client";
 import toast from "react-hot-toast";
-import { PayloadAuth, CartItemType, UserDTO } from "../interfaces";
+import { PayloadAuth, CartItemType, UserDTO, CategoryDTO } from "../interfaces";
 
 export enum ActionKind {
     SET_LOADING = 'SET_LOADING',
     AUTH = 'AUTH',
     ADD_CART = 'ADD_CART',
     ADD_ORDERS = 'ADD_ORDERS',
-    ADD_USERS = 'ADD_USERS'
+    ADD_USERS = 'ADD_USERS',
+    ADD_CATEGORIES = 'ADD_CATEGORIES',
 }
 
 export type Action = {
@@ -31,6 +32,10 @@ export type Action = {
 {
     type: ActionKind,
     payload: UserDTO[]
+} |
+{
+    type: ActionKind,
+    payload: CategoryDTO[]
 }
 
 

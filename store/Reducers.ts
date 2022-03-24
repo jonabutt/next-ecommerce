@@ -1,4 +1,4 @@
-import { PayloadAuth, CartItemType, OrderDTO, UserDTO } from '../interfaces'
+import { PayloadAuth, CartItemType, OrderDTO, UserDTO, CategoryDTO } from '../interfaces'
 import { Action, ActionKind } from './Actions'
 
 export type ContextProps = {
@@ -6,7 +6,8 @@ export type ContextProps = {
     auth: PayloadAuth | null,
     orders: OrderDTO[],
     cart: CartItemType[],
-    users: UserDTO[]
+    users: UserDTO[],
+    categories: CategoryDTO[]
 }
 
 const reducers = (state: ContextProps, action: Action): ContextProps => {
@@ -35,6 +36,11 @@ const reducers = (state: ContextProps, action: Action): ContextProps => {
             return {
                 ...state,
                 users: action.payload as Array<UserDTO>
+            };
+        case ActionKind.ADD_CATEGORIES:
+            return {
+                ...state,
+                categories: action.payload as Array<CategoryDTO>
             };
         default:
             return state;

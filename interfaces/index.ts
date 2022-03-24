@@ -69,3 +69,8 @@ export type UserDTO = {
     roleId: string;
     isRoot: boolean;
 }
+
+export type CategoryDTO = {
+    id: string;
+    name: string;
+}
