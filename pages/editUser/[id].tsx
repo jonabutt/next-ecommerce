@@ -2,9 +2,11 @@ import { Box, Button, Checkbox, FormControl, Grid, InputLabel, OutlinedInput } f
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { UserDTO } from "../../interfaces";
-import { ActionKind } from "../../store/Actions";
+import { ActionKind, updateUserRole } from "../../store/Actions";
 import { DataContext } from "../../store/GlobalState";
+import { patchData } from "../../utils/fetchAPI";
 
 const EditUser = () => {
     // get id passed in query string
@@ -17,16 +19,32 @@ const EditUser = () => {
     const [editUser, setEditUser] = useState<UserDTO | null>(null);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
     useEffect(() => {
+        // find user by id to edit
         const user = users.find(u => u.id === id);
         if (user) {
             setEditUser(user);
+            // set is admin if role id is of role admin
+            setIsAdmin(user.roleId === 'ckzqt1gxo0081psu7ap73rabs');
         }
     }, [users])
     const handleSubmit = async (event: (FormEvent<HTMLFormElement>)) => {
         event.preventDefault();
-        dispatch({ type: ActionKind.SET_LOADING, payload: true });
-
-        dispatch({ type: ActionKind.SET_LOADING, payload: false });
+        if (auth && editUser) {
+            dispatch({ type: ActionKind.SET_LOADING, payload: true });
+            // send data to api
+            patchData(`/user/${editUser.id}`, { isAdmin: isAdmin }, auth.token)
+                .then(res => {
+                    if (res.success === true) {
+                        // udpate user on memory
+                        dispatch(updateUserRole(users, editUser.id, 'ckzqt1gxo0081psu7ap73rabs'));
+                        toast.success(res.msg);
+                    }
+                    else {
+                        toast.error(res.msg);
+                    }
+                    dispatch({ type: ActionKind.SET_LOADING, payload: false });
+                });
+        }
     }
     if (editUser === null) {
         return "";

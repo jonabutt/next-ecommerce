@@ -85,3 +85,13 @@ export const removeCartItem = (cart: CartItemType[], id: string) => {
     const updatedCart = cart.filter(c => c.productId !== id);
     return ({ type: ActionKind.ADD_CART, payload: updatedCart });
 }
+
+export const updateUserRole = (users: UserDTO[], userId: string, roleId: string) => {
+    const updatedUsers = [...users];
+    let userToUpdate = updatedUsers.find(u => u.id === userId);
+    if (userToUpdate) {
+        userToUpdate.roleId = roleId;
+        return ({ type: ActionKind.ADD_USERS, payload: updatedUsers });
+    }
+
+}
