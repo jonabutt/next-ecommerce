@@ -12,6 +12,7 @@ type SuccessGetCategoriesResponseData = {
 
 type SuccessCreateCategoryResponseData = {
     success: boolean,
+    msg: string,
     newCategory: CategoryDTO
 }
 type ErrorResponseData = {
@@ -60,6 +61,7 @@ const createCategory = async (
         // return new category
         return res.json({ 
             success: true, 
+            msg: "New category was created successfully.",
             newCategory: {
                 id: newCategory.id,
                 name: newCategory.name
