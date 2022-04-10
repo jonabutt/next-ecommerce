@@ -104,3 +104,8 @@ export const removeUser = (users: UserDTO[], userId: string) => {
     const updatedUsers = users.filter(u => u.id !== userId);
     return ({ type: ActionKind.ADD_USERS, payload: updatedUsers });
 }
+
+export const removeCategory = (categories: CategoryDTO[], categoryId: string) => {
+    const updatedCategories = categories.filter(c => c.id !== categoryId);
+    return ({ type: ActionKind.ADD_CATEGORIES, payload: updatedCategories });
+}
