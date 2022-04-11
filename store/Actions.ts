@@ -109,3 +109,8 @@ export const removeCategory = (categories: CategoryDTO[], categoryId: string) =>
     const updatedCategories = categories.filter(c => c.id !== categoryId);
     return ({ type: ActionKind.ADD_CATEGORIES, payload: updatedCategories });
 }
+
+export const updateCategory = (categories: CategoryDTO[], categoryId: string,updatedCategory: CategoryDTO) => {
+    const updatedCategories = categories.map(c => c.id===categoryId?updatedCategory:c);
+    return ({ type: ActionKind.ADD_CATEGORIES, payload: updatedCategories });
+}

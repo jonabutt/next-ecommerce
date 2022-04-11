@@ -3,10 +3,11 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import React,{ useContext, useState,FormEvent} from 'react';
 import toast from 'react-hot-toast';
-import { ActionKind, removeCategory } from '../store/Actions';
+import { ActionKind, removeCategory, updateCategory } from '../store/Actions';
 import { DataContext } from '../store/GlobalState';
-import { deleteData, postData } from '../utils/fetchAPI';
+import { deleteData, postData, putData } from '../utils/fetchAPI';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import { CategoryDTO } from '../interfaces';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -17,6 +18,7 @@ const Categories: NextPage = () => {
     const { state, dispatch } = useContext(DataContext);
     const { auth,categories } = state;
     const [ name, setName ] = useState("");
+    const [ id, setId ] = useState("");
     const [ modalIsOpen, setModalIsOpen ] = useState(false);
     const [ categoryToDelete, setCategoryToDelete ] = useState<CategoryDTO|null>(null);
 
@@ -28,21 +30,44 @@ const Categories: NextPage = () => {
         event.preventDefault();
         // show loading backdrop
         dispatch({ type: ActionKind.SET_LOADING, payload: true });
-        // post new category to api
-        const res = await postData(
-            "categories",
-            {name:name},
-            auth.token
-        );
-        // check api result if success
-        if(res.success === true){
-            // add new category to store
-            dispatch({type: ActionKind.ADD_CATEGORIES, payload: [...categories, res.newCategory]})
-            toast.success(res.msg);
+
+        if(id){
+            // put updated category name to api
+            const res = await putData(
+                `categories/${id}`,
+                {name},
+                auth.token
+            );
+            // check api result if success
+            if(res.success === true){
+                //  update category name in list                
+                dispatch(updateCategory(categories,id,res.updatedCategory));
+                toast.success(res.msg);
+                setId("");
+                setName("");
+            }
+            else{
+                toast.error(res.msg);
+            }
         }
         else{
-            toast.error(res.msg);
+            // post new category to api
+            const res = await postData(
+                "categories",
+                {name:name},
+                auth.token
+            );
+            // check api result if success
+            if(res.success === true){
+                // add new category to store
+                dispatch({type: ActionKind.ADD_CATEGORIES, payload: [...categories, res.newCategory]})
+                toast.success(res.msg);
+            }
+            else{
+                toast.error(res.msg);
+            }
         }
+       
         // hide load screen backdrop
         dispatch({ type: ActionKind.SET_LOADING, payload: false });
     }
@@ -51,6 +76,10 @@ const Categories: NextPage = () => {
         setModalIsOpen(true);
         // save category to delete in memory
         setCategoryToDelete(categoryToDelete);
+    }
+    const onEditCategory = (categoryToEdit: CategoryDTO) => {
+        setId(categoryToEdit.id);
+        setName(categoryToEdit.name);
     }
     const onConfirmDeleteCategory = async () => {
         if(categoryToDelete!==null){
@@ -110,7 +139,7 @@ const Categories: NextPage = () => {
                         placeholder='Enter Category Name'
                     />
                 </FormControl>
-                <Button type="submit" color="primary" fullWidth>Create Category</Button>
+                <Button type="submit" color="primary" fullWidth>{id?"Edit":"Create"} Category</Button>
 
             </form>
         </Paper>
@@ -140,7 +169,10 @@ const Categories: NextPage = () => {
                                     <TableCell>
                                         {c.name}
                                     </TableCell>
-                                    <TableCell>                                                  
+                                    <TableCell>   
+                                        <IconButton onClick={() => onEditCategory(c)}>
+                                            <EditIcon color="primary" />
+                                        </IconButton>                                                  
                                         <IconButton onClick={() => onDeleteCategory(c)}>
                                             <DeleteIcon color="error" />
                                         </IconButton>                                                
