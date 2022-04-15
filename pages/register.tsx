@@ -25,7 +25,7 @@ const Register: NextPage = () => {
     const initialState : UserData = { name: '', email: '',showPassword:false, password: '', confirmPassword: '',showConfirmPassword:false};
     const [userData, setUserData] = useState<UserData>(initialState);
     const {name,email,password,confirmPassword,showPassword,showConfirmPassword} = userData;
-    const paperStyle = { padding:20, display: "flex", flexDirection:"column", alignItems: "center"};
+    const paperStyle = { padding:20, display: "flex", flexDirection:"column" as "column", alignItems: "center"};
     const avatarStyle = { backgroundColor : "#1bbd7e"};
     const { state , dispatch } = useContext(DataContext);
     const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +40,7 @@ const Register: NextPage = () => {
         if(auth!==null){
           router.push('/');
         }
-      },[auth]);
+      },[auth,router]);
     const handleClickShowPassword = () => {
         setUserData({
           ...userData,

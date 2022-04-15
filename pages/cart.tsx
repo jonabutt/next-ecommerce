@@ -22,7 +22,7 @@ const Cart: NextPage = () => {
     // update total on change of cart object
     const getTotal = () => {
       const totalPrice = cart.reduce((prev, currItem) => {
-        return prev + (currItem.price * currItem.quantity)
+        return prev + (currItem.price.toNumber() * currItem.quantity)
       }, 0);
       setTotal(totalPrice);
     }
@@ -51,7 +51,7 @@ const Cart: NextPage = () => {
       }
       updateCart();
     }
-  }, []);
+  }, [dispatch]);
   const handlePayment = async () => {
 
     // if the user is not logged in redirect

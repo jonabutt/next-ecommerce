@@ -36,7 +36,7 @@ const OrderItem = ({ orderItem }: Props) => {
                     {displayDate(new Date(orderItem.dateCreated))}
                 </Box>
                 <Box sx={{ flex: 1 }}>
-                    {displayMoney(orderItem.total)}
+                    {displayMoney(orderItem.total.toNumber())}
                 </Box>
             </Box>
         </Link>

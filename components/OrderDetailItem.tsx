@@ -42,8 +42,8 @@ const OrderDetailItem = ({ orderDetailItem }: Props) => {
         }}>
             <Typography>
                 {orderDetailItem.quantity} x<> </>
-                {displayMoney(orderDetailItem.unitPrice)}<> </>
-                = {displayMoney(orderDetailItem.unitPrice * orderDetailItem.quantity)}
+                {displayMoney(orderDetailItem.unitPrice.toNumber())}<> </>
+                = {displayMoney(orderDetailItem.unitPrice.toNumber() * orderDetailItem.quantity.toNumber())}
             </Typography>
 
         </Box>

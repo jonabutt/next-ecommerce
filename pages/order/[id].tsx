@@ -22,7 +22,7 @@ const OrderDetails = () => {
             console.log("order");
             setOrder(order);
         }
-    });
+    },[setOrder]);
     if (auth === null) return null;
     if (!order) return null;
     return (
@@ -54,7 +54,7 @@ const OrderDetails = () => {
                 }
                 <Box>
                     <h3>Order Total</h3>
-                    <Box pl={1.2}>{displayMoney(order.total)}</Box>
+                    <Box pl={1.2}>{displayMoney(order.total.toNumber())}</Box>
                 </Box>
             </Box>
         </>

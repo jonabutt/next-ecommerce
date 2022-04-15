@@ -10,9 +10,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { CategoryDTO } from '../interfaces';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
+// const Transition = React.forwardRef(function Transition(props, ref) {
+//     return <Slide direction="up" ref={ref} {...props} />;
+// });
 
 const Categories: NextPage = () => {
     const { state, dispatch } = useContext(DataContext);
@@ -22,7 +22,7 @@ const Categories: NextPage = () => {
     const [ modalIsOpen, setModalIsOpen ] = useState(false);
     const [ categoryToDelete, setCategoryToDelete ] = useState<CategoryDTO|null>(null);
 
-    const paperStyle = { padding:20, display: "flex", flexDirection:"column", alignItems: "center"};
+    const paperStyle = { padding:20, display: "flex", flexDirection:"column" as "column", alignItems: "center"};
 
     if (auth === null) return null;
 
@@ -113,11 +113,10 @@ const Categories: NextPage = () => {
         {categoryToDelete && 
             <Dialog open={modalIsOpen}
                 onClose={() => setModalIsOpen(false)}
-                TransitionComponent={Transition}
                 aria-labelledby="modal-modal-remove-category"
                 aria-describedby="modal-modal-confirm-delete-category" >
                 <DialogTitle>
-                    Do you want to delete the category with name "{categoryToDelete.name}"?
+                    Do you want to delete the category with name &quot;{categoryToDelete.name}&quot;?
                 </DialogTitle>
                 <DialogActions>
                     <Button variant='contained' onClick={() => setModalIsOpen(false)} color="primary">No</Button>

@@ -27,7 +27,7 @@ const Signin: NextPage = () => {
   const {username,password} = loginData;
 
 
-  const paperStyle = { padding:20, display: "flex", flexDirection:"column", alignItems: "center"};
+  const paperStyle = { padding:20, display: "flex", flexDirection:"column" as "column", alignItems: "center"};
   const avatarStyle = { backgroundColor : "#1bbd7e"};
 
   const router = useRouter();
@@ -36,7 +36,7 @@ const Signin: NextPage = () => {
     if(auth!==null){
       router.push('/');
     }
-  },[auth]);
+  },[auth,router]);
 
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setLoginData({...loginData,[e.currentTarget.name]:e.currentTarget.value})

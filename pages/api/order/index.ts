@@ -1,4 +1,5 @@
 import { Order, OrderDetail, PrismaClient } from '@prisma/client';
+import { Decimal } from '@prisma/client/runtime';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { CartItemType } from '../../../interfaces';
 import auth, { MiddlewareErrorResponseData, MiddlewareSuccessResponseData } from '../../../middleware/auth';
@@ -119,12 +120,12 @@ const createOrder = async (
         const createOrderPromise = prisma.order.create({
             data: {
                 userId: result.id,
-                total: total,
+                total: total.toString(),
                 orderDetails: {
                     create: cart.map(c => {
-                        const orderDetail: OrderDetail = {
+                        const orderDetail = {
                             productId: c.productId,
-                            quantity: c.quantity,
+                            quantity: c.quantity as unknown as Decimal,
                             unitPrice: c.price
                         };
                         return orderDetail;

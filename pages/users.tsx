@@ -14,9 +14,9 @@ import { deleteData } from '../utils/fetchAPI';
 import toast from 'react-hot-toast';
 import { UserDTO } from '../interfaces';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
+// const Transition = React.forwardRef(function Transition(props, ref) {
+//     return <Slide direction="up" ref={ref} {...props} />;
+// });
 
 const Users: NextPage = () => {
     const { state, dispatch } = useContext(DataContext);
@@ -59,11 +59,10 @@ const Users: NextPage = () => {
         <>
             <Dialog open={modalIsOpen}
                 onClose={() => setModalIsOpen(false)}
-                TransitionComponent={Transition}
                 aria-labelledby="modal-modal-remove-user"
                 aria-describedby="modal-modal-confirm-delete-user" >
                 <DialogTitle>
-                    Do you want to delete the user with name "{userNameToDelete}"?
+                    Do you want to delete the user with name &quot;{userNameToDelete}&quot;?
                 </DialogTitle>
                 <DialogActions>
                     <Button variant='contained' onClick={() => setModalIsOpen(false)} color="primary">No</Button>

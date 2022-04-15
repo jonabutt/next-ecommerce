@@ -26,7 +26,7 @@ const EditUser = () => {
             // set is admin if role id is of role admin
             setIsAdmin(user.roleId === 'ckzqt1gxo0081psu7ap73rabs');
         }
-    }, [users])
+    }, [users,id])
     const handleSubmit = async (event: (FormEvent<HTMLFormElement>)) => {
         event.preventDefault();
         if (auth && editUser) {

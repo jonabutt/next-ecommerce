@@ -125,7 +125,7 @@ const Profile: NextPage = () => {
             setProfileData({ ...profileData, name: state.auth.user.name })
         }
 
-    }, [state.auth?.user])
+    }, [state.auth,setProfileData,profileData])
     if (state.auth == null) return null;
     return (
         <>
