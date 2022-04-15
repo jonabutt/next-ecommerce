@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    "BASE_URL": "http://localhost:3000"
+    "BASE_URL": "https://fabulous-sable-461f36.netlify.app"
   },
   images:{
     domains: ['images.unsplash.com']
